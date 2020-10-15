@@ -26,8 +26,8 @@ https://vboehm.net
 (Mostly copying from https://github.com/Cycling74/max-devkit ReadMe.md)
 
 0. Clone the code from Github, including submodules: 
-   `git clone --recurse-submodules https://github.com/v7b1/vb.mi-dev.git`
-1. `cd vb.mi-dev` to change directories (cd) into the folder
+   `git clone --recurse-submodules https://github.com/v7b1/pmpd.git`
+1. `cd pmpd` to change directories (cd) into the folder
 2. `mkdir build` to create a folder with your various build files
 3. `cd build` to put yourself into that folder
 4. Now you can generate the projects for your chosen build environment:

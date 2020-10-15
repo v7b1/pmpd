@@ -1,0 +1,20 @@
+{
+	"author" : "Cyrille Henry, Volker Böhm",
+	"authors" : [  ],
+	"description" : "porting pmpd from pd to max",
+	"max_version_max" : "none",
+	"max_version_min" : "7.1",
+	"name" : "pmpd",
+	"os" : 	{
+		"macintosh" : 		{
+			"platform" : [ "x64" ],
+			"min_version" : "10.7.x"
+		}
+
+	}
+,
+	"tags" : [ "pmpd" ],
+	"version" : "0.0.1",
+	"website" : "https://vboehm.net",
+
+}

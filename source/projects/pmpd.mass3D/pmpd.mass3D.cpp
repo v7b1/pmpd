@@ -6,9 +6,6 @@
 //#define max(a,b) ( ((a) > (b)) ? (a) : (b) )
 //#define min(a,b) ( ((a) < (b)) ? (a) : (b) )
 
-//#define t_floatarg double
-//#define t_float double
-//#define SETFLOAT(address, val) atom_setfloat(address, val)
 
 using namespace c74::max;
 

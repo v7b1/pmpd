@@ -1,12 +1,14 @@
-#include "c74_msp.h"
+#include "c74_max.h"
+#include "pmpd_translate.h"
 
 //#include "math.h"
 //
 //#define max(a,b) ( ((a) > (b)) ? (a) : (b) )
 //#define min(a,b) ( ((a) < (b)) ? (a) : (b) )
 
-#define t_floatarg double
-#define SETFLOAT(address, val) atom_setfloat(address, val)
+//#define t_floatarg double
+//#define t_float double
+//#define SETFLOAT(address, val) atom_setfloat(address, val)
 
 using namespace c74::max;
 
@@ -34,11 +36,6 @@ static int makeseed3D(void)
     return (random_nextseed & 0x7fffffff);
 }
 
-//t_atom_float atom_getfloatarg(int offset, long argc, t_atom *argv)
-//{
-//    return atom_getfloat(argv+offset);
-//}
-//
 
 
 void *mass3D_new(t_symbol *s, int argc, t_atom *argv)

@@ -37,6 +37,7 @@
 #include "c74_max.h"
 
 #include "pmpd.h"
+#include "pmpd_translate.h"
 
 
 using namespace c74::max;

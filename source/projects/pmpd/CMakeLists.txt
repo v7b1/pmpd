@@ -4,6 +4,7 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/../../max-sdk-base/script/max-pretarget.cmak
 
 include_directories( 
 	"${C74_INCLUDES}"
+	"${CMAKE_CURRENT_SOURCE_DIR}/../../include/"
 )
 
 set(BUILD_SOURCES
@@ -18,6 +19,7 @@ set(BUILD_SOURCES
 	pmpd_various.h
 	pmpd_test.h
 	pmpd_deprecated.h
+	"${CMAKE_CURRENT_SOURCE_DIR}/../../include/pmpd_translate.h"
 
 )
 

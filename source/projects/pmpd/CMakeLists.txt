@@ -1,7 +1,5 @@
-cmake_minimum_required(VERSION 3.0)
 
-
-include(${CMAKE_CURRENT_SOURCE_DIR}/../../max-api/script/max-pretarget.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/../../max-sdk-base/script/max-pretarget.cmake)
 
 
 include_directories( 
@@ -34,4 +32,4 @@ add_library(
 # create groups in our project
 # source_group(TREE ${MUTABLE_PATH} FILES ${STMLIB_SOURCES})
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/../../max-api/script/max-posttarget.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/../../max-sdk-base/script/max-posttarget.cmake)

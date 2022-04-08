@@ -1,4 +1,4 @@
-#include "c74_msp.h"
+#include "c74_max.h"
 //#include "math.h"
 //
 #define max(a,b) ( ((a) > (b)) ? (a) : (b) )

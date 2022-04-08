@@ -34,7 +34,7 @@
 //#include "math.h"
 //
 
-
+#include "c74_max.h"
 
 #include "pmpd.h"
 

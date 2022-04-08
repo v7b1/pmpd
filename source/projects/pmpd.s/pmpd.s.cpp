@@ -1,4 +1,4 @@
-#include "c74_msp.h"
+#include "c74_max.h"
 
 
 using namespace c74::max;

@@ -1,8 +1,12 @@
 #include "c74_msp.h"
+
 //#include "math.h"
 //
 //#define max(a,b) ( ((a) > (b)) ? (a) : (b) )
 //#define min(a,b) ( ((a) < (b)) ? (a) : (b) )
+
+#define t_floatarg double
+#define SETFLOAT(address, val) atom_setfloat(address, val)
 
 using namespace c74::max;
 
@@ -29,6 +33,12 @@ static int makeseed3D(void)
     random_nextseed = random_nextseed * 435898247 + 938284287;
     return (random_nextseed & 0x7fffffff);
 }
+
+//t_atom_float atom_getfloatarg(int offset, long argc, t_atom *argv)
+//{
+//    return atom_getfloat(argv+offset);
+//}
+//
 
 
 void *mass3D_new(t_symbol *s, int argc, t_atom *argv)
@@ -393,9 +403,9 @@ void mass3D_bang(t_mass3D *x)
 	  if (vZ==0)
 	    posZ_new = x->posZ_old_1;
 
-	  posX_new = max(min(x->maxX, posX_new), x->minX);
-	  posY_new = max(min(x->maxY, posY_new), x->minY);
-	  posZ_new = max(min(x->maxZ, posZ_new), x->minZ);
+	  posX_new = fmax(fmin(x->maxX, posX_new), x->minX);
+	  posY_new = fmax(fmin(x->maxY, posY_new), x->minY);
+	  posZ_new = fmax(fmin(x->maxZ, posZ_new), x->minZ);
 
 
   posX_new += x->dX;
@@ -1056,14 +1066,15 @@ void mass3D_inter_cylinder(t_mass3D *x, t_symbol *s, int argc, t_atom *argv)
 
 static void mass3D_free(t_mass3D *x)
 {
-    pd_unbind(&x->x_obj.ob_pd, x->x_sym);
+    // TODO: check out what this is about "pd_unbind"
+//    pd_unbind(&x->x_obj.ob_pd, x->x_sym);
 }
 
 
-void ext_main(void* r) {
+void ext_main(void* r)
 {
 
-  mass3D_class = class_new(gensym("pmpd.mass3D"),
+  mass3D_class = class_new("pmpd.mass3D",
         (method)mass3D_new,
         (method)mass3D_free,
 		sizeof(t_mass3D),
@@ -1071,37 +1082,37 @@ void ext_main(void* r) {
 
 //  class_addcreator((t_newmethod)mass3D_new, gensym("masse3D"), A_GIMME, 0);
 
-  class_addmethod(mass3D_class, (method)mass3D_force, gensym("force3D"),A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
-  class_addbang(mass3D_class, mass3D_bang);
+  class_addmethod(mass3D_class, (method)mass3D_force, "force3D", A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(mass3D_class, (method)mass3D_bang, "bang", 0L);
 
-  class_addmethod(mass3D_class, (method)mass3D_dX, gensym("dX"), A_DEFFLOAT, 0);
-  class_addmethod(mass3D_class, (method)mass3D_dY, gensym("dY"), A_DEFFLOAT, 0);
-  class_addmethod(mass3D_class, (method)mass3D_dZ, gensym("dZ"), A_DEFFLOAT, 0);
-  class_addmethod(mass3D_class, (method)mass3D_dXYZ, gensym("dXYZ"), A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
-  class_addmethod(mass3D_class, (method)mass3D_setX, gensym("setX"), A_DEFFLOAT, 0);
-  class_addmethod(mass3D_class, (method)mass3D_setY, gensym("setY"), A_DEFFLOAT, 0);
-  class_addmethod(mass3D_class, (method)mass3D_setZ, gensym("setZ"), A_DEFFLOAT, 0);
-  class_addmethod(mass3D_class, (method)mass3D_setXYZ, gensym("setXYZ"), A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
-  class_addmethod(mass3D_class, (method)mass3D_minX, gensym("setXmin"), A_DEFFLOAT, 0);
-  class_addmethod(mass3D_class, (method)mass3D_minY, gensym("setYmin"), A_DEFFLOAT, 0);
-  class_addmethod(mass3D_class, (method)mass3D_maxX, gensym("setXmax"), A_DEFFLOAT, 0);
-  class_addmethod(mass3D_class, (method)mass3D_maxY, gensym("setYmax"), A_DEFFLOAT, 0);
-  class_addmethod(mass3D_class, (method)mass3D_minZ, gensym("setZmin"), A_DEFFLOAT, 0);
-  class_addmethod(mass3D_class, (method)mass3D_maxZ, gensym("setZmax"), A_DEFFLOAT, 0);
-  class_addmethod(mass3D_class, (method)mass3D_set_mass3D, gensym("setM"), A_DEFFLOAT, 0);
-  class_addmethod(mass3D_class, (method)mass3D_reset, gensym("reset"), 0);
-  class_addmethod(mass3D_class, (method)mass3D_resetf, gensym("resetF"), 0);
-  class_addmethod(mass3D_class, (method)mass3D_reset, gensym("loadbang"), 0);
-  class_addmethod(mass3D_class, (method)mass3D_on, gensym("on"), 0);
-  class_addmethod(mass3D_class, (method)mass3D_off, gensym("off"), 0);
-  class_addmethod(mass3D_class, (method)mass3D_seuil, gensym("setT"), A_DEFFLOAT, 0);
-  class_addmethod(mass3D_class, (method)mass3D_damp, gensym("setD"), A_DEFFLOAT, 0);
+  class_addmethod(mass3D_class, (method)mass3D_dX, "dX", A_DEFFLOAT, 0);
+  class_addmethod(mass3D_class, (method)mass3D_dY, "dY", A_DEFFLOAT, 0);
+  class_addmethod(mass3D_class, (method)mass3D_dZ, "dZ", A_DEFFLOAT, 0);
+  class_addmethod(mass3D_class, (method)mass3D_dXYZ, "dXYZ", A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
+  class_addmethod(mass3D_class, (method)mass3D_setX, "setX", A_DEFFLOAT, 0);
+  class_addmethod(mass3D_class, (method)mass3D_setY, "setY", A_DEFFLOAT, 0);
+  class_addmethod(mass3D_class, (method)mass3D_setZ, "setZ", A_DEFFLOAT, 0);
+  class_addmethod(mass3D_class, (method)mass3D_setXYZ, "setXYZ", A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
+  class_addmethod(mass3D_class, (method)mass3D_minX, "setXmin", A_DEFFLOAT, 0);
+  class_addmethod(mass3D_class, (method)mass3D_minY, "setYmin", A_DEFFLOAT, 0);
+  class_addmethod(mass3D_class, (method)mass3D_maxX, "setXmax", A_DEFFLOAT, 0);
+  class_addmethod(mass3D_class, (method)mass3D_maxY, "setYmax", A_DEFFLOAT, 0);
+  class_addmethod(mass3D_class, (method)mass3D_minZ,  "setZmin", A_DEFFLOAT, 0);
+  class_addmethod(mass3D_class, (method)mass3D_maxZ,  "setZmax", A_DEFFLOAT, 0);
+  class_addmethod(mass3D_class, (method)mass3D_set_mass3D,  "setM", A_DEFFLOAT, 0);
+  class_addmethod(mass3D_class, (method)mass3D_reset,  "reset", 0);
+  class_addmethod(mass3D_class, (method)mass3D_resetf,  "resetF", 0);
+  class_addmethod(mass3D_class, (method)mass3D_reset,  "loadbang", 0);
+  class_addmethod(mass3D_class, (method)mass3D_on,  "on", 0);
+  class_addmethod(mass3D_class, (method)mass3D_off,  "off", 0);
+  class_addmethod(mass3D_class, (method)mass3D_seuil,  "setT", A_DEFFLOAT, 0);
+  class_addmethod(mass3D_class, (method)mass3D_damp,  "setD", A_DEFFLOAT, 0);
 
-  class_addmethod(mass3D_class, (method)mass3D_inter_ambient, gensym("interactor_ambient_3D"), A_GIMME, 0);
-  class_addmethod(mass3D_class, (method)mass3D_inter_sphere, gensym("interactor_sphere_3D"), A_GIMME, 0);
-  class_addmethod(mass3D_class, (method)mass3D_inter_plane, gensym("interactor_plane_3D"), A_GIMME, 0);
-  class_addmethod(mass3D_class, (method)mass3D_inter_circle, gensym("interactor_circle_3D"), A_GIMME, 0);
-  class_addmethod(mass3D_class, (method)mass3D_inter_cylinder, gensym("interactor_cylinder_3D"), A_GIMME, 0);
+  class_addmethod(mass3D_class, (method)mass3D_inter_ambient,  "interactor_ambient_3D", A_GIMME, 0);
+  class_addmethod(mass3D_class, (method)mass3D_inter_sphere,  "interactor_sphere_3D", A_GIMME, 0);
+  class_addmethod(mass3D_class, (method)mass3D_inter_plane,  "interactor_plane_3D", A_GIMME, 0);
+  class_addmethod(mass3D_class, (method)mass3D_inter_circle,  "interactor_circle_3D", A_GIMME, 0);
+  class_addmethod(mass3D_class, (method)mass3D_inter_cylinder,  "interactor_cylinder_3D", A_GIMME, 0);
     
     class_register(CLASS_BOX, mass3D_class);
 

@@ -50,8 +50,8 @@ void *linkKD_new(t_symbol *s, int argc, t_atom *argv)
         
         
         x->x_sym = (argc && atom_gettype(argv) == A_SYM) ? atom_getsym(argv) : NULL;
-        object_post(NULL, "s: %s", s->s_name);
-        object_post(NULL, "x_sym: %s", x->x_sym->s_name);
+//        object_post(NULL, "s: %s", s->s_name);
+//        object_post(NULL, "x_sym: %s", x->x_sym->s_name);
         
         if (x->x_sym) {
             object_subscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);

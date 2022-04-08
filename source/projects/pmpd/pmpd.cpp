@@ -202,7 +202,7 @@ void ext_main(void* r)
     /*
      pmpd_list
      --
-     Fucntions to output internal state of the object in lists
+     Functions to output internal state of the object in lists
      Output Syntax : 1 list with all elements
      */
     
@@ -272,8 +272,8 @@ void ext_main(void* r)
      Functions to list all elements that fit specific conditions
      Output syntax : depends of the function
      */
-    class_addmethod(pmpd_class, (method)pmpd_testMass,                   "testMass", A_GIMME, 0);
-    class_addmethod(pmpd_class, (method)pmpd_testLink,                   "testLink", A_GIMME, 0);
+    class_addmethod(pmpd_class, (method)pmpd_testMass,                "testMass", A_GIMME, 0);
+    class_addmethod(pmpd_class, (method)pmpd_testLink,                "testLink", A_GIMME, 0);
     class_addmethod(pmpd_class, (method)pmpd_testMassT,               "testMassT", A_GIMME, 0);
     class_addmethod(pmpd_class, (method)pmpd_testLinkT,               "testLinkT", A_GIMME, 0);
     class_addmethod(pmpd_class, (method)pmpd_testMassL,               "testMassL", A_GIMME, 0);

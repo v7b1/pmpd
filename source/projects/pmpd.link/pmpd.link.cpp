@@ -1,8 +1,8 @@
 #include "c74_max.h"
 //#include "math.h"
 //
-#define max(a,b) ( ((a) > (b)) ? (a) : (b) )
-#define min(a,b) ( ((a) < (b)) ? (a) : (b) )
+//#define max(a,b) ( ((a) > (b)) ? (a) : (b) )
+//#define min(a,b) ( ((a) < (b)) ? (a) : (b) )
 
 using namespace c74::max;
 
@@ -215,7 +215,8 @@ void linkKD_Lmax(t_linkKD *x, double Lmax)
 static void linkKD_free(t_linkKD *x)
 {
 //    pd_unbind(&x->x_obj.ob_pd, x->x_sym);
-    object_unsubscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
+//    object_unsubscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
+    object_unregister(x);
     
     object_free(x->m_proxy);
     
@@ -307,7 +308,7 @@ void ext_main(void* r)
     ps_pmpd_sendmessage = gensym("sendmessage");
     
     
-    return 0;
+//    return 0;
     
 }
 

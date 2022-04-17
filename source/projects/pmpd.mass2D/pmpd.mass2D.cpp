@@ -17,7 +17,7 @@ struct t_mass2D {
   double mass2D, seuil, damp;
   double minX, maxX, minY, maxY;
   t_atom  pos_new[2], vitesse[3], force[3];
-  t_outlet *position2D_new, *vitesse_out, *force_out;
+  void *position2D_out, *vitesse_out, *force_out;
   t_symbol *x_sym; // receive
   unsigned int x_state; // random
   double x_f; // random
@@ -201,9 +201,13 @@ void mass2D_bang(t_mass2D *x)
   SETFLOAT(&(x->vitesse[1]), x->VY );
   SETFLOAT(&(x->vitesse[2]), sqrt( (x->VX * x->VX) + (x->VY * x->VY) ));
  
-  outlet_anything(x->vitesse_out, gensym("velocity2D"), 3, x->vitesse);
-  outlet_anything(x->force_out, gensym("force2D"), 3, x->force);
-  outlet_anything(x->position2D_new, gensym("position2D"), 2, x->pos_new);
+//  outlet_anything(x->vitesse_out, gensym("velocity2D"), 3, x->vitesse);
+//  outlet_anything(x->force_out, gensym("force2D"), 3, x->force);
+//  outlet_anything(x->position2D_out, gensym("position2D"), 2, x->pos_new);
+     
+     outlet_anything(x->vitesse_out, ps_velocity2D, 3, x->vitesse);
+     outlet_anything(x->force_out, ps_force2D, 3, x->force);
+     outlet_anything(x->position2D_out, ps_position2D, 2, x->pos_new);
  }
 }
 
@@ -240,7 +244,7 @@ void mass2D_reset(t_mass2D *x)
 
   outlet_anything(x->vitesse_out, gensym("velocity2D"), 3, x->vitesse);
   outlet_anything(x->force_out, gensym("force2D"), 3, x->force); 
-  outlet_anything(x->position2D_new, gensym("position2D"), 2, x->pos_new);
+  outlet_anything(x->position2D_out, gensym("position2D"), 2, x->pos_new);
 }
 
 void mass2D_resetf(t_mass2D *x)
@@ -265,7 +269,7 @@ void mass2D_setXY(t_mass2D *x, double posX, double posY)
   SETFLOAT(&(x->pos_new[0]), posX );
   SETFLOAT(&(x->pos_new[1]), posY );
 
-  outlet_anything(x->position2D_new, gensym("position2D"), 2, x->pos_new);
+  outlet_anything(x->position2D_out, gensym("position2D"), 2, x->pos_new);
 }
 
 void mass2D_setX(t_mass2D *x, double posX)
@@ -276,7 +280,7 @@ void mass2D_setX(t_mass2D *x, double posX)
 
   SETFLOAT(&(x->pos_new[0]), posX );
 
-  outlet_anything(x->position2D_new, gensym("position2D"), 2, x->pos_new);
+  outlet_anything(x->position2D_out, gensym("position2D"), 2, x->pos_new);
 }
 
 void mass2D_setY(t_mass2D *x, double posY)
@@ -287,12 +291,12 @@ void mass2D_setY(t_mass2D *x, double posY)
   
   SETFLOAT(&(x->pos_new[1]), posY );
 
-  outlet_anything(x->position2D_new, gensym("position2D"), 2, x->pos_new);
+  outlet_anything(x->position2D_out, gensym("position2D"), 2, x->pos_new);
 }
 
 void mass2D_loadbang(t_mass2D *x)
 {
-  outlet_anything(x->position2D_new, gensym("position2D"), 2, x->pos_new);
+  outlet_anything(x->position2D_out, gensym("position2D"), 2, x->pos_new);
 }
 
 
@@ -688,6 +692,26 @@ double ftx=0;
 	}
 }
 
+void mass_notify(t_mass2D *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
+{
+    if (msg == ps_pmpd_sendmessage) { // pmpd.rr is calling with a message from 'pmpd.s'
+        t_atomarray *aa = (t_atomarray *)data;
+        
+        long ac;
+        t_atom *av;
+        atomarray_getatoms(aa, &ac, &av);
+        
+        if (atom_gettype(av) == A_SYM) {
+            t_symbol *arg = atom_getsym(av);
+            object_method_typed((t_object *)x, arg, ac-1, av+1, NULL);
+        }
+    }
+    else if (msg == ps_pmpd_bang) {
+        mass2D_bang(x); // call it directly, we know it exists!
+    }
+
+}
+
 void *mass2D_new(t_symbol *s, int argc, t_atom *argv)
 {
  
@@ -698,12 +722,22 @@ void *mass2D_new(t_symbol *s, int argc, t_atom *argv)
 
 //  pd_bind(&x->x_obj.ob_pd, atom_getsymbolarg(0, argc, argv));
 
-  x->position2D_new=outlet_new(&x->x_obj, 0);
-  x->force_out=outlet_new(&x->x_obj, 0);
-  x->vitesse_out=outlet_new(&x->x_obj, 0);
+//  x->position2D_new=outlet_new(&x->x_obj, 0);
+//  x->force_out=outlet_new(&x->x_obj, 0);
+//  x->vitesse_out=outlet_new(&x->x_obj, 0);
+    
+    
+    x->vitesse_out = outlet_new((t_object *)x, NULL);
+    x->force_out = outlet_new((t_object *)x, NULL);
+    x->position2D_out = outlet_new((t_object *)x, NULL);
+    
 
   x->forceX=0;
   x->forceY=0;
+    
+    if (x->x_sym) {
+        object_subscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
+    }
 
   if (argc >= 2)
     x->mass2D = atom_getfloatarg(1, argc, argv) ;
@@ -772,6 +806,7 @@ void *mass2D_new(t_symbol *s, int argc, t_atom *argv)
 static void mass2D_free(t_mass2D *x)
 {
 //    pd_unbind(&x->x_obj.ob_pd, x->x_sym);
+    object_unsubscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
 }
 
 void ext_main(void* r)
@@ -811,7 +846,19 @@ void ext_main(void* r)
   class_addmethod(mass2D_class, (method)mass2D_reset,  "reset", 0);
   class_addmethod(mass2D_class, (method)mass2D_resetf,  "resetF", 0);
   class_addmethod(mass2D_class, (method)mass2D_loadbang,  "loadbang", 0);
+    class_addmethod(mass2D_class, (method)mass_notify, "notify", A_CANT, 0);
     
     class_register(CLASS_BOX, mass2D_class);
+
+    ps_nothing = gensym("");
+    ps_pmpd_rr = gensym("pmpd.rr");
+    ps_pmpd_bang = gensym("bang");
+    ps_pmpd_sendmessage = gensym("sendmessage");
+    
+    
+    
+    ps_velocity2D = gensym("velocity2D");
+    ps_force2D = gensym("force2D");
+    ps_position2D = gensym("position2D");
 
 }

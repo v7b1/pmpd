@@ -1,4 +1,5 @@
 #include "c74_max.h"
+#include "pmpd_translate.h"
 
 
 using namespace c74::max;
@@ -20,13 +21,6 @@ typedef struct _rr
     t_object    ob;
     long        usagecount;
 } t_rr;
-
-
-static t_symbol *ps_nothing;
-static t_symbol *ps_pmpd_rr;
-static t_symbol *ps_pmpd_bang;
-static t_symbol *ps_pmpd_sendmessage;
-
 
 
 

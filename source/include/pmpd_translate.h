@@ -20,6 +20,17 @@ using namespace c74::max;
 #define t_float double
 
 
+
+static t_symbol *ps_nothing;
+static t_symbol *ps_pmpd_rr;
+static t_symbol *ps_pmpd_bang;
+static t_symbol *ps_pmpd_sendmessage;
+
+static t_symbol *ps_position2D;
+static t_symbol *ps_force2D;
+static t_symbol *ps_velocity2D;
+
+
 t_symbol* atom_getsymbolarg(int offset, long argc, t_atom *argv)
 {
     return atom_getsym(argv+offset);

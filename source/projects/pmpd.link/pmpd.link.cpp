@@ -1,4 +1,5 @@
 #include "c74_max.h"
+#include "pmpd_translate.h"
 //#include "math.h"
 //
 //#define max(a,b) ( ((a) > (b)) ? (a) : (b) )
@@ -22,12 +23,6 @@ struct t_linkKD {
 };
 
 
-static t_symbol *ps_nothing;
-static t_symbol *ps_pmpd_rr;
-static t_symbol *ps_pmpd_bang;
-static t_symbol *ps_pmpd_sendmessage;
-
-
 //void *linkKD_new(t_symbol *s, double L, double K, double D, double D2)
 void *linkKD_new(t_symbol *s, int argc, t_atom *argv)
 {
@@ -35,9 +30,6 @@ void *linkKD_new(t_symbol *s, int argc, t_atom *argv)
     
     if ((x = (t_linkKD *)object_alloc(linkKD_class)))
     {
-        //inlet_new(x, "float");
-//        floatin(x, 1);
-        
         x->m_proxy = proxy_new(x, 1, NULL);
         
         x->force2 = outlet_new(x, NULL);
@@ -50,8 +42,6 @@ void *linkKD_new(t_symbol *s, int argc, t_atom *argv)
         
         
         x->x_sym = (argc && atom_gettype(argv) == A_SYM) ? atom_getsym(argv) : NULL;
-//        object_post(NULL, "s: %s", s->s_name);
-//        object_post(NULL, "x_sym: %s", x->x_sym->s_name);
         
         if (x->x_sym) {
             object_subscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
@@ -119,11 +109,6 @@ void linkKD_float(t_linkKD *x, double f1)
     else x->position2 = f1;
 }
 
-//void linkKD_pos2(t_linkKD *x, double f1)
-//{
-//    object_post(NULL, "ft1: %f", f1);
-//    x->position2 = f1;
-//}
 
 void linkKD_bang(t_linkKD *x)
 {
@@ -149,9 +134,9 @@ void linkKD_bang(t_linkKD *x)
     force1 += (x->position_old1 - x->position1)*x->D2;
     // masse damping
     
-    outlet_float(x->force1, force1);
+//    outlet_float(x->force1, force1);    // FIXME: order?
     outlet_float(x->force2, force2);
-    
+    outlet_float(x->force1, force1);
     
     x->position_old1 = x->position1;
     x->position_old2 = x->position2;
@@ -226,7 +211,7 @@ static void linkKD_free(t_linkKD *x)
 
 void link_notify(t_linkKD *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-//    object_post((t_object *)x, "link_notify: %s", msg->s_name);
+    object_post((t_object *)x, "link_notify: %s", msg->s_name);
     if (msg == ps_pmpd_sendmessage) { // pmpd.rr is calling with a message from 'pmpd.s'
         t_atomarray *aa = (t_atomarray *)data;
         
@@ -234,7 +219,6 @@ void link_notify(t_linkKD *x, t_symbol *s, t_symbol *msg, void *sender, void *da
         t_atom *av;
         atomarray_getatoms(aa, &ac, &av);
         
-//        object_post(NULL, "ac: %ld", ac);
         if (atom_gettype(av) == A_SYM) {
             t_symbol *arg = atom_getsym(av);
 //            object_post(NULL, "arg: %s", arg->s_name);
@@ -246,13 +230,13 @@ void link_notify(t_linkKD *x, t_symbol *s, t_symbol *msg, void *sender, void *da
         linkKD_bang(x); // call it directly, we know it exists!
 //        object_method((t_object *)x, ps_pmpd_bang);
     }
-    else if (msg == gensym("free")) {
-        // pmpd.rr is disappearing, no more servers
-        // but we remain subscribed, so there's nothing to do here
-        // if a new master appears, we will be called with 'subscribe_attach'
-        // and automatically be attached.
-        object_post(NULL, "pmpd.rr free!");
-    }
+//    else if (msg == gensym("free")) {
+//        // pmpd.rr is disappearing, no more servers
+//        // but we remain subscribed, so there's nothing to do here
+//        // if a new master appears, we will be called with 'subscribe_attach'
+//        // and automatically be attached.
+//        object_post(NULL, "pmpd.rr free!");
+//    }
 }
 
 

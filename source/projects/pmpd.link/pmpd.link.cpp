@@ -200,8 +200,7 @@ void linkKD_Lmax(t_linkKD *x, double Lmax)
 static void linkKD_free(t_linkKD *x)
 {
 //    pd_unbind(&x->x_obj.ob_pd, x->x_sym);
-//    object_unsubscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
-    object_unregister(x);
+    object_unsubscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
     
     object_free(x->m_proxy);
     

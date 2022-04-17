@@ -1,9 +1,6 @@
 #include "c74_max.h"
 #include "pmpd_translate.h"
-//#include "math.h"
-//
-//#define max(a,b) ( ((a) > (b)) ? (a) : (b) )
-//#define min(a,b) ( ((a) < (b)) ? (a) : (b) )
+
 
 using namespace c74::max;
 
@@ -118,7 +115,7 @@ void linkKD_bang(t_linkKD *x)
     //distance = abs(x->position2 - x->position1);
     if (distance<0) distance = -distance;
     
-    force1 =  x->raideur*(distance-(x->longueur)) + x->viscosite*(distance - x->distance_old) ;
+    force1 = x->raideur*(distance-(x->longueur)) + x->viscosite*(distance - x->distance_old) ;
     
     x->distance_old = distance;
     
@@ -133,8 +130,7 @@ void linkKD_bang(t_linkKD *x)
     force2 = -force1 + (x->position_old2 - x->position2)*x->D2;
     force1 += (x->position_old1 - x->position1)*x->D2;
     // masse damping
-    
-//    outlet_float(x->force1, force1);    // FIXME: order?
+     
     outlet_float(x->force2, force2);
     outlet_float(x->force1, force1);
     
@@ -210,7 +206,7 @@ static void linkKD_free(t_linkKD *x)
 
 void link_notify(t_linkKD *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-    object_post((t_object *)x, "link_notify: %s", msg->s_name);
+//    object_post((t_object *)x, "link_notify: %s", msg->s_name);
     if (msg == ps_pmpd_sendmessage) { // pmpd.rr is calling with a message from 'pmpd.s'
         t_atomarray *aa = (t_atomarray *)data;
         
@@ -220,22 +216,12 @@ void link_notify(t_linkKD *x, t_symbol *s, t_symbol *msg, void *sender, void *da
         
         if (atom_gettype(av) == A_SYM) {
             t_symbol *arg = atom_getsym(av);
-//            object_post(NULL, "arg: %s", arg->s_name);
-            
             object_method_typed((t_object *)x, arg, ac-1, av+1, NULL);
         }
     }
     else if (msg == ps_pmpd_bang) {
         linkKD_bang(x); // call it directly, we know it exists!
-//        object_method((t_object *)x, ps_pmpd_bang);
     }
-//    else if (msg == gensym("free")) {
-//        // pmpd.rr is disappearing, no more servers
-//        // but we remain subscribed, so there's nothing to do here
-//        // if a new master appears, we will be called with 'subscribe_attach'
-//        // and automatically be attached.
-//        object_post(NULL, "pmpd.rr free!");
-//    }
 }
 
 
@@ -248,9 +234,8 @@ void linkKD_assist(t_linkKD *x, void *b, long m, long a, char *s) {
     }
     else {
         switch(a) {
-            case 0: sprintf (s,"(float) x position of the linkKD"); break;
-            case 1: sprintf (s,"(float) x force applied to the linkKD"); break;
-            case 2: sprintf (s,"(float) x velocity of the linkKD"); break;
+            case 0: sprintf (s,"(float) force1"); break;
+            case 1: sprintf (s,"(float) force2"); break;
         }
         
     }
@@ -269,7 +254,6 @@ void ext_main(void* r)
                              0L, A_GIMME, 0);
     
     class_addmethod(linkKD_class, (method)linkKD_float, "float", A_FLOAT, 0);
-//    class_addmethod(linkKD_class, (method)linkKD_pos2, "ft1", A_FLOAT, 0);
     class_addmethod(linkKD_class, (method)linkKD_bang, "bang", 0);
     class_addmethod(linkKD_class, (method)linkKD_reset, "reset", 0);
     class_addmethod(linkKD_class, (method)linkKD_resetl, "resetL", 0);
@@ -285,13 +269,10 @@ void ext_main(void* r)
     
     class_register(CLASS_BOX, linkKD_class);
     
-    ps_nothing = gensym("");
     ps_pmpd_rr = gensym("pmpd.rr");
     ps_pmpd_bang = gensym("bang");
     ps_pmpd_sendmessage = gensym("sendmessage");
     
-    
-//    return 0;
     
 }
 

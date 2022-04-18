@@ -10,9 +10,6 @@ static t_class *rr_class;
 
 struct t_pmpd_s {
     t_object  x_obj;
-    
-    
-    t_symbol *x_sym;  // send address?
     t_object *rr;
 };
 
@@ -33,9 +30,10 @@ void *pmpd_s_new(t_symbol *s)
         
         t_object *rr;
         
+        // check and see if there is already a named 'rr' for this 'pmpd_s'
         rr = (t_object *)object_findregistered(ps_pmpd_rr, s);
         if(!rr) {
-            // let's create it and register
+            // no? let's create it and register
             object_new(CLASS_NOBOX, ps_pmpd_rr, s);
             rr = (t_object *)object_findregistered(ps_pmpd_rr, s);
         }
@@ -52,13 +50,12 @@ void *pmpd_s_new(t_symbol *s)
 
 
 
-#pragma mark pmpd.rr object
+// pmpd.rr object
 //////////////////////////////////////////////////////////
 
 void rr_retain(t_rr *x)
 {
     x->usagecount++;
-    printf("usagecount: %ld\n", x->usagecount);
 }
 
 void rr_release(t_rr *x)
@@ -71,7 +68,6 @@ void rr_release(t_rr *x)
 
 void rr_free(t_rr *x)
 {
-    printf("rr_free!\n");
     object_unregister(x);
 }
 
@@ -79,14 +75,11 @@ void *rr_new(t_symbol *name)
 {
     t_rr *x = NULL;
     
-    printf("rr_new: name: %s\n", name->s_name);
-    
     if (name && name != ps_nothing) {
         x = (t_rr *)object_alloc(rr_class);
         if (x) {
             x->usagecount = 0;
             object_register(ps_pmpd_rr, name, x);
-            printf("rr_new: object registered\n");
         }
     }
     return x;
@@ -136,9 +129,15 @@ void pmpd_s_int(t_pmpd_s *x, long n)
 
 void pmpd_s_bang(t_pmpd_s *x)
 {
-//    pmpd_s_anything(x, gensym("bang"), 0, NULL);
     object_notify(x->rr, ps_pmpd_bang, NULL);
     
+}
+
+void pmpd_s_notify(t_pmpd_s *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
+{
+    if (msg == gensym("free")) {
+        // the 'rr' is going away, this would be fatal, but will never actually happen
+    }
 }
 
 
@@ -151,7 +150,7 @@ static void pmpd_s_free(t_pmpd_s *x)
 void pmpd_s_assist(t_pmpd_s *x, void *b, long m, long a, char *s) {
     if (m==ASSIST_INLET) {
         switch(a) {
-            case 0: sprintf (s,"..."); break;
+            case 0: sprintf (s,"(anything) to be sent to registered objects"); break;
                 
         }
     }
@@ -171,6 +170,7 @@ void ext_main(void* r)
     class_addmethod(pmpd_s_class, (method)pmpd_s_bang, "bang", 0);
     class_addmethod(pmpd_s_class, (method)pmpd_s_anything, "anything", A_GIMME, 0);
     class_addmethod(pmpd_s_class, (method)pmpd_s_assist, "assist", A_CANT,0);
+    class_addmethod(pmpd_s_class, (method)pmpd_s_notify, "notify", A_CANT, 0);
 
     
     class_register(CLASS_BOX, pmpd_s_class);
@@ -191,9 +191,7 @@ void ext_main(void* r)
     ps_pmpd_rr = gensym("pmpd.rr");
     ps_pmpd_bang = gensym("bang");
     ps_pmpd_sendmessage = gensym("sendmessage");
-    
-    return 0;
-    
+
 }
 
 

@@ -14,73 +14,58 @@ struct t_linkKD {
     void *force2;
     double Lmin, Lmax;
     t_symbol *x_sym;  // receive
-    t_object *rr;
     void *m_proxy;
     long    id;
 };
 
 
-//void *linkKD_new(t_symbol *s, double L, double K, double D, double D2)
+
 void *linkKD_new(t_symbol *s, int argc, t_atom *argv)
 {
-    t_linkKD *x = NULL;
+    t_linkKD *x = (t_linkKD *)object_alloc(linkKD_class);
+    double K, D, L, D2 = 0.0;
     
-    if ((x = (t_linkKD *)object_alloc(linkKD_class)))
+    if (x)
     {
         x->m_proxy = proxy_new(x, 1, NULL);
         
         x->force2 = outlet_new(x, NULL);
         x->force1 = outlet_new(x, NULL);
         
-        x->position1 = 0;
-        x->position2 = 0;
-        
-        double K, D, L, D2 = 0.0;
-        
         
         x->x_sym = (argc && atom_gettype(argv) == A_SYM) ? atom_getsym(argv) : NULL;
-        
-        if (x->x_sym) {
+    
+        if (x->x_sym && x->x_sym != ps_nothing) {
             object_subscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
+            argc--;
+            argv++;
         }
-        
         
         // check the other arguments
         if(argc > 0) {
-            argv++;
-            if(atom_gettype(argv) == A_FLOAT)
-                L = atom_getfloat(argv);
-            else if(atom_gettype(argv) == A_LONG)
-                L = atom_getlong(argv);
-//            object_post(NULL, "L: %f", L);
+//            argv++;
+            L = atom_getfloat(argv);
+//                object_post(NULL, "L: %f", L);
         }
         if(argc > 1) {
             argv++;
-            if(atom_gettype(argv) == A_FLOAT)
-                K = atom_getfloat(argv);
-            else if(atom_gettype(argv) == A_LONG)
-                K = atom_getlong(argv);
-//            object_post(NULL, "K: %f", K);
+            K = atom_getfloat(argv);
+//                object_post(NULL, "K: %f", K);
         }
         if(argc > 2) {
             argv++;
-            if(atom_gettype(argv) == A_FLOAT)
-                D = atom_getfloat(argv);
-            else if(atom_gettype(argv) == A_LONG)
-                D = atom_getlong(argv);
-//            object_post(NULL, "D: %f", D);
+            D = atom_getfloat(argv);
+//                object_post(NULL, "D: %f", D);
         }
         if(argc > 3) {
             argv++;
-            if(atom_gettype(argv) == A_FLOAT)
-                D2 = atom_getfloat(argv);
-            else if(atom_gettype(argv) == A_LONG)
-                D2 = atom_getlong(argv);
-//            object_post(NULL, "D2: %f", D2);
+            D2 = atom_getfloat(argv);
+//                object_post(NULL, "D2: %f", D2);
         }
         
-
-        
+        x->position1 = 0;
+        x->position2 = 0;
+            
         x->raideur=K;
         x->viscosite=D;
         x->D2=D2;
@@ -89,9 +74,8 @@ void *linkKD_new(t_symbol *s, int argc, t_atom *argv)
         x->Lmax= 10000;
         
         x->longueur = L;
-        
+            
     }
-    
 
     return x;
 }
@@ -197,10 +181,7 @@ static void linkKD_free(t_linkKD *x)
 {
 //    pd_unbind(&x->x_obj.ob_pd, x->x_sym);
     object_unsubscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
-    
     object_free(x->m_proxy);
-    
-    // TODO: do we need to free anything else?
 }
 
 
@@ -234,8 +215,8 @@ void linkKD_assist(t_linkKD *x, void *b, long m, long a, char *s) {
     }
     else {
         switch(a) {
-            case 0: sprintf (s,"(float) force1"); break;
-            case 1: sprintf (s,"(float) force2"); break;
+            case 0: sprintf (s,"(float) force to apply to mass 1"); break;
+            case 1: sprintf (s,"(float) force to apply to mass 2"); break;
         }
         
     }

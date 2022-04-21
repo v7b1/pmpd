@@ -3,14 +3,14 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 1,
-			"revision" : 6,
+			"minor" : 2,
+			"revision" : 2,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 1063.0, 196.0, 700.0, 579.0 ],
+		"rect" : [ 515.0, 193.0, 700.0, 579.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 13.0,
@@ -40,13 +40,108 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-25",
-					"maxclass" : "message",
+					"format" : 6,
+					"id" : "obj-35",
+					"maxclass" : "flonum",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 589.0, 240.0, 50.0, 23.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-33",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 3.0, 245.5, 65.0, 36.0 ],
+					"text" : "compute output",
+					"textjustification" : 1
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-31",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 253.0, 233.0, 59.0, 21.0 ],
+					"text" : "set limits"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-29",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 129.0, 138.0, 74.0, 21.0 ],
+					"presentation_linecount" : 2,
+					"text" : "set position"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-28",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 64.5, 138.0, 61.0, 21.0 ],
+					"text" : "set mass"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-26",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 218.0, 128.0, 79.0, 36.0 ],
+					"text" : "adds force to this mass"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-24",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 208.0, 340.0, 290.0, 21.0 ],
+					"text" : "args: receive address, initial mass, initial position"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-22",
+					"maxclass" : "toggle",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "int" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 488.0, 154.0, 24.0, 24.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-20",
+					"maxclass" : "newobj",
 					"numinlets" : 2,
 					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 402.0, 437.0, 62.0, 23.0 ],
-					"text" : "loadbang"
+					"outlettype" : [ "bang" ],
+					"patching_rect" : [ 488.0, 193.0, 67.0, 23.0 ],
+					"text" : "metro 100"
 				}
 
 			}
@@ -57,7 +152,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 532.0, 207.0, 37.0, 23.0 ],
+					"patching_rect" : [ 532.0, 233.0, 37.0, 23.0 ],
 					"text" : "reset"
 				}
 
@@ -70,7 +165,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 488.0, 207.0, 24.0, 24.0 ]
+					"patching_rect" : [ 488.0, 233.0, 24.0, 24.0 ]
 				}
 
 			}
@@ -80,7 +175,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 488.0, 252.0, 76.0, 23.0 ],
+					"patching_rect" : [ 488.0, 278.0, 76.0, 23.0 ],
 					"text" : "pmpd.s aha"
 				}
 
@@ -91,7 +186,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 239.0, 386.0, 150.0, 21.0 ],
+					"patching_rect" : [ 260.0, 386.0, 150.0, 21.0 ],
 					"text" : "velocity of mass"
 				}
 
@@ -102,7 +197,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 198.0, 418.0, 150.0, 21.0 ],
+					"patching_rect" : [ 208.0, 418.0, 150.0, 21.0 ],
 					"text" : "force applied"
 				}
 
@@ -113,45 +208,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 157.0, 451.0, 113.0, 21.0 ],
+					"patching_rect" : [ 155.0, 451.0, 113.0, 21.0 ],
 					"text" : "x position of mass"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"format" : 6,
-					"id" : "obj-26",
-					"maxclass" : "flonum",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "bang" ],
-					"parameter_enable" : 0,
-					"patching_rect" : [ 353.0, 298.0, 50.0, 23.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-22",
-					"maxclass" : "toggle",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "int" ],
-					"parameter_enable" : 0,
-					"patching_rect" : [ 40.0, 166.0, 24.0, 24.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-20",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 30.0, 212.0, 67.0, 23.0 ],
-					"text" : "metro 100"
 				}
 
 			}
@@ -162,8 +220,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 203.0, 239.0, 197.0, 23.0 ],
-					"text" : "setXmin -10000, setXmax 10000"
+					"patching_rect" : [ 200.0, 260.0, 168.0, 23.0 ],
+					"text" : "setXmin -100, setXmax 100"
 				}
 
 			}
@@ -176,7 +234,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 154.0, 386.0, 83.0, 23.0 ]
+					"patching_rect" : [ 175.0, 386.0, 83.0, 23.0 ]
 				}
 
 			}
@@ -189,7 +247,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 113.0, 416.0, 83.0, 23.0 ]
+					"patching_rect" : [ 123.0, 416.0, 83.0, 23.0 ]
 				}
 
 			}
@@ -202,7 +260,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 72.0, 445.0, 83.0, 23.0 ]
+					"patching_rect" : [ 70.0, 445.0, 83.0, 23.0 ]
 				}
 
 			}
@@ -214,7 +272,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 32.0, 246.0, 24.0, 24.0 ]
+					"patching_rect" : [ 23.5, 283.5, 24.0, 24.0 ]
 				}
 
 			}
@@ -227,7 +285,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 163.0, 128.0, 50.0, 23.0 ]
+					"patching_rect" : [ 139.0, 167.0, 50.0, 23.0 ]
 				}
 
 			}
@@ -238,7 +296,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 162.0, 175.0, 53.0, 23.0 ],
+					"patching_rect" : [ 139.0, 200.0, 53.0, 23.0 ],
 					"text" : "setX $1"
 				}
 
@@ -252,7 +310,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 94.0, 128.0, 50.0, 23.0 ]
+					"patching_rect" : [ 70.0, 167.0, 50.0, 23.0 ]
 				}
 
 			}
@@ -263,7 +321,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 93.0, 175.0, 55.0, 23.0 ],
+					"patching_rect" : [ 70.0, 200.0, 55.0, 23.0 ],
 					"text" : "setM $1"
 				}
 
@@ -275,20 +333,20 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
-					"patching_rect" : [ 72.0, 340.0, 101.0, 23.0 ],
-					"text" : "pmpd.mass aha"
+					"patching_rect" : [ 71.0, 340.0, 123.0, 23.0 ],
+					"text" : "pmpd.mass aha 2 3"
 				}
 
 			}
 , 			{
 				"box" : 				{
 					"id" : "obj-2",
-					"linecount" : 5,
+					"linecount" : 4,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 93.0, 23.0, 476.0, 79.0 ],
-					"text" : "mass : get liaison forces and output position\nthe sum of the forces apply to a mass modifie its velocity (depending of it's weight). the position his change according to the velocity and the weight of the mass\nM is positive. negative value give non physical things."
+					"patching_rect" : [ 93.0, 23.0, 495.0, 65.0 ],
+					"text" : "mass : get liaison forces and output position\nthe sum of the forces applied to a mass modify its velocity (depending of its weight). the position his change according to the velocity and the weight of the mass\nM is positive. negative value give non physical things."
 				}
 
 			}
@@ -311,7 +369,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 237.0, 322.0, 45.0, 23.0 ],
+					"patching_rect" : [ 267.0, 295.0, 45.0, 23.0 ],
 					"text" : "resetF"
 				}
 
@@ -325,19 +383,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 143.0, 252.0, 50.0, 23.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-24",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 350.0, 331.0, 50.0, 23.0 ],
-					"text" : "dX $1"
+					"patching_rect" : [ 228.0, 167.0, 50.0, 23.0 ]
 				}
 
 			}
@@ -379,7 +425,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-11", 0 ],
+					"destination" : [ "obj-16", 0 ],
 					"source" : [ "obj-20", 0 ]
 				}
 
@@ -395,27 +441,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-3", 0 ],
 					"source" : [ "obj-23", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-3", 0 ],
-					"source" : [ "obj-24", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-3", 0 ],
-					"source" : [ "obj-25", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-24", 0 ],
-					"source" : [ "obj-26", 0 ]
 				}
 
 			}
@@ -437,6 +462,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-15", 0 ],
 					"source" : [ "obj-3", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"source" : [ "obj-35", 0 ]
 				}
 
 			}

@@ -1,18 +1,11 @@
 #include "c74_max.h"
-//#include "math.h"
-//
-#define max(a,b) ( ((a) > (b)) ? (a) : (b) )
-#define min(a,b) ( ((a) < (b)) ? (a) : (b) )
+#include "pmpd_translate.h"
+
 
 using namespace c74::max;
 
 
 static t_class *mass_class;
-
-static t_symbol *ps_nothing;
-static t_symbol *ps_pmpd_rr;
-static t_symbol *ps_pmpd_bang;
-static t_symbol *ps_pmpd_sendmessage;
 
 
 struct t_mass {
@@ -20,7 +13,7 @@ struct t_mass {
     double pos_old_1, pos_old_2, Xinit;
     double force, mass, dX;
     double minX, maxX;
-    void *position_new, *vitesse_out, *force_out;
+    void *position_out, *vitesse_out, *force_out;
     t_symbol *x_sym; // receive
     unsigned int x_state; // random
     double x_f; // random
@@ -54,43 +47,50 @@ static double random_bang(t_mass *x)
 }
 
 
-//void *mass_new(t_symbol *s, int argc, t_atom *argv)
-void *mass_new(t_symbol *s, double M, double X)
+void *mass_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_mass *x = (t_mass *)object_alloc(mass_class);
     
-    x->x_sym = s;
-//    pd_bind(&x->x_obj.ob_pd, s);
-    //s->s_thing = &x->x_obj; // TODO: check out binding
-    
-
-//    object_post(NULL, "x_sym: %s", x->x_sym->s_name);
-    
-    if (x->x_sym) {
-        object_subscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
+    if (x) {
+        x->x_sym = (argc && atom_gettype(argv) == A_SYM) ? atom_getsym(argv) : NULL;
+        
+        if (x->x_sym && x->x_sym != ps_nothing) {
+            object_subscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
+            argc--;
+            argv++;
+        }
+        
+        // create outlets;
+        x->vitesse_out = outlet_new(x, NULL);
+        x->force_out = outlet_new(x, NULL);
+        x->position_out = outlet_new(x, NULL);
+        
+        x->mass = 0.;
+        x->Xinit = x->pos_old_1 = x->pos_old_2 = 0.;
+        x->force = 0.;
+        x->minX = -100000;
+        x->maxX = 100000;
+        
+        
+        // check the other arguments
+        if (argc > 0) {
+            x->mass = atom_getfloat(argv);
+        }
+        if (argc > 1) {
+            argv++;
+            double X = atom_getfloat(argv);
+            x->Xinit = X;
+            x->pos_old_1 = X;
+            x->pos_old_2 = X;
+        }
+        
+        
+        if (x->mass <= 0) x->mass = 1;
+        
+        makeseed();
     }
     
-    
-    x->vitesse_out = outlet_new(x, NULL);
-    x->force_out = outlet_new(x, NULL);
-    x->position_new = outlet_new(x, NULL);
-    
-    
-    x->Xinit = X;
-    
-    x->pos_old_1 = X;
-    x->pos_old_2 = X;
-    x->force = 0;
-    x->mass = M;
-    
-    x->minX = -100000;
-    x->maxX = 100000;
-    
-    if (x->mass<=0) x->mass=1;
-    
-    makeseed();
-    
-    return (void *)x;
+    return (x);
 }
 
 
@@ -109,6 +109,11 @@ void mass_float(t_mass *x, double f1)
     x->force += f1;
 }
 
+void mass_int(t_mass *x, long f1)
+{
+    x->force += (double)f1;
+}
+
 void mass_bang(t_mass *x)
 {
     double pos_new;
@@ -117,7 +122,7 @@ void mass_bang(t_mass *x)
         pos_new = x->force/x->mass + 2*x->pos_old_1 - x->pos_old_2;
     else pos_new = x->pos_old_1;
     
-    pos_new = max(min(x->maxX, pos_new), x->minX);
+    pos_new = fmax(fmin(x->maxX, pos_new), x->minX);
     
     pos_new += x->dX;
     
@@ -125,7 +130,7 @@ void mass_bang(t_mass *x)
     
     outlet_float(x->vitesse_out, x->pos_old_1 - x->pos_old_2);
     outlet_float(x->force_out, x->force);
-    outlet_float(x->position_new, pos_new);
+    outlet_float(x->position_out, pos_new);
     
     x->pos_old_2 = x->pos_old_1;
     x->pos_old_1 = pos_new;
@@ -145,7 +150,7 @@ void mass_reset(t_mass *x)
     
     x->force=0;
     
-    outlet_float(x->position_new, x->Xinit);
+    outlet_float(x->position_out, x->Xinit);
 }
 
 void mass_resetF(t_mass *x)
@@ -166,12 +171,12 @@ void mass_setX(t_mass *x, double posX)
     
     x->force=0;
     
-    outlet_float(x->position_new, posX);
+    outlet_float(x->position_out, posX);
 }
 
 void mass_loadbang(t_mass *x)
 {
-    outlet_float(x->position_new, x->Xinit);
+    outlet_float(x->position_out, x->Xinit);
 }
 
 void mass_set_mass(t_mass *x, double mass)
@@ -214,15 +219,15 @@ void mass_notify(t_mass *x, t_symbol *s, t_symbol *msg, void *sender, void *data
 void mass_assist(t_mass *x, void *b, long m, long a, char *s) {
     if (m==ASSIST_INLET) {
         switch(a) {
-            case 0: sprintf (s,"..."); break;
+            case 0: sprintf (s,"(int/float) adds force to this mass, (bang) compute and output new position"); break;
                 
         }
     }
     else {
         switch(a) {
-            case 0: sprintf (s,"(float) x position of the mass"); break;
-            case 1: sprintf (s,"(float) x force applied to the mass"); break;
-            case 2: sprintf (s,"(float) x velocity of the mass"); break;
+            case 0: sprintf (s,"(float) position of the mass"); break;
+            case 1: sprintf (s,"(float) force applied to the mass"); break;
+            case 2: sprintf (s,"(float) velocity of the mass"); break;
         }
         
     }
@@ -231,20 +236,14 @@ void mass_assist(t_mass *x, void *b, long m, long a, char *s) {
 
 void ext_main(void* r)
 {
-
-//    mass_class = class_new(gensym("mass"),
-//                           (t_newmethod)mass_new,
-//                           (t_method)mass_free,
-//                           sizeof(t_mass),
-//                           CLASS_DEFAULT, A_DEFSYM, A_DEFFLOAT, A_DEFFLOAT,0);
-    
-  mass_class = class_new("pmpd.mass",
+   mass_class = class_new("pmpd.mass",
         (method)mass_new,
         (method)mass_free,
 		sizeof(t_mass),
-        0L, A_DEFSYM, A_DEFFLOAT, A_DEFFLOAT, 0);
+                         0L, A_GIMME, 0);
 
     class_addmethod(mass_class, (method)mass_float, "float", A_FLOAT, 0);
+    class_addmethod(mass_class, (method)mass_int, "int", A_LONG, 0);
     class_addmethod(mass_class, (method)mass_bang, "bang", 0);
     class_addmethod(mass_class, (method)mass_set_mass, "setM", A_DEFFLOAT, 0);
     class_addmethod(mass_class, (method)mass_setX, "setX", A_DEFFLOAT, 0);
@@ -264,6 +263,5 @@ void ext_main(void* r)
     ps_pmpd_bang = gensym("bang");
     ps_pmpd_sendmessage = gensym("sendmessage");
     
-    return 0;
 
 }

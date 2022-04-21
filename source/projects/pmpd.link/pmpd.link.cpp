@@ -250,6 +250,7 @@ void ext_main(void* r)
     
     class_register(CLASS_BOX, linkKD_class);
     
+    ps_nothing = gensym("");
     ps_pmpd_rr = gensym("pmpd.rr");
     ps_pmpd_bang = gensym("bang");
     ps_pmpd_sendmessage = gensym("sendmessage");

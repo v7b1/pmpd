@@ -783,30 +783,24 @@ void *mass2D_new(t_symbol *s, int argc, t_atom *argv)
                 
                 if (offset > 1) {
                     x->mass2D = atom_getfloat(argv+1);
-                    post("mass: %f", x->mass2D);
                 }
                 
                 if (offset > 2) {
                     x->Xinit = atom_getfloat(argv+2);
-                    post("Xinit: %f", x->Xinit);
                 }
                 if (offset > 3) {
                     x->Yinit = atom_getfloat(argv+3);
-                    post("Yinit: %f", x->Yinit);
                 }
             }
             
             else {      // no receive address
                 x->mass2D = atom_getfloat(argv);
-                post("mass: %f", x->mass2D);
                 
                 if (offset > 1) {
                     x->Xinit = atom_getfloat(argv+1);
-                    post("Xinit: %f", x->Xinit);
                 }
                 if (offset > 2) {
                     x->Yinit = atom_getfloat(argv+2);
-                    post("Yinit: %f", x->Yinit);
                 }
             }
             

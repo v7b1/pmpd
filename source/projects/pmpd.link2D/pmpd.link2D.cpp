@@ -193,15 +193,14 @@ void link_notify(t_link2D *x, t_symbol *s, t_symbol *msg, void *sender, void *da
 void link2D_assist(t_link2D *x, void *b, long m, long a, char *s) {
     if (m==ASSIST_INLET) {
         switch(a) {
-            case 0: sprintf (s,"..."); break;
+            case 0: sprintf (s,"(bang) computes and outputs forces, according to the last masses positions"); break;
                 
         }
     }
     else {
         switch(a) {
-            case 0: sprintf (s,"(float) x position of the link2D"); break;
-            case 1: sprintf (s,"(float) x force applied to the link2D"); break;
-            case 2: sprintf (s,"(float) x velocity of the link2D"); break;
+            case 0: sprintf (s,"(list) force2D to apply to mass 1"); break;
+            case 1: sprintf (s,"(list) force2D to apply to mass 2"); break;
         }
         
     }
@@ -220,10 +219,10 @@ void *link2D_new(t_symbol *s, int argc, t_atom *argv)
 
     x->m_proxy = proxy_new(x, 1, NULL);
  
-//  x->force1=outlet_new(&x->x_obj, 0);
-//  x->force2=outlet_new(&x->x_obj, 0);
-    x->force1 = outlet_new(x, NULL);
+    // two outlets
     x->force2 = outlet_new(x, NULL);
+    x->force1 = outlet_new(x, NULL);
+    
 
   x->position2Dx1 = 0;
   x->position2Dx2 = 0;

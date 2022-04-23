@@ -1,5 +1,4 @@
 #include "c74_max.h"
-//#include "math.h"
 #include "pmpd_translate.h"
 
 using namespace c74::max;
@@ -179,15 +178,7 @@ void link_notify(t_link2D *x, t_symbol *s, t_symbol *msg, void *sender, void *da
     }
     else if (msg == ps_pmpd_bang) {
         link2D_bang(x); // call it directly, we know it exists!
-//        object_method((t_object *)x, ps_pmpd_bang);
     }
-//    else if (msg == gensym("free")) {
-//        // pmpd.rr is disappearing, no more servers
-//        // but we remain subscribed, so there's nothing to do here
-//        // if a new master appears, we will be called with 'subscribe_attach'
-//        // and automatically be attached.
-//        object_post(NULL, "pmpd.rr free!");
-//    }
 }
 
 void link2D_assist(t_link2D *x, void *b, long m, long a, char *s) {
@@ -206,79 +197,67 @@ void link2D_assist(t_link2D *x, void *b, long m, long a, char *s) {
     }
 }
 
-//void *link2D_new(t_symbol *s, double L, double K, double D, double D2)
+
 void *link2D_new(t_symbol *s, int argc, t_atom *argv)
 {
   
-  t_link2D *x = (t_link2D *)object_alloc(link2D_class);
+    t_link2D *x = (t_link2D *)object_alloc(link2D_class);
 
-  x->x_sym = s;
-//  pd_bind(&x->x_obj.ob_pd, s);
+    if (x) {
+        x->m_proxy = proxy_new(x, 1, NULL);
+     
+        // two outlets
+        x->force2 = outlet_new(x, NULL);
+        x->force1 = outlet_new(x, NULL);
+        
 
-//  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("position2D"), gensym("position2D2"));
+        x->position2Dx1 = 0;
+        x->position2Dx2 = 0;
+        x->position2Dy1 = 0;
+        x->position2Dy2 = 0;
+        
+        double K, D, L, D2 = 0.0;
+        
+        x->x_sym = (argc && atom_gettype(argv) == A_SYM) ? atom_getsym(argv) : NULL;
+        
+        if (x->x_sym && x->x_sym != ps_nothing) {
+            object_subscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
+            
+            // check the other arguments
+            if (argc > 1)
+                L = atom_getfloat(argv+1);
+            if (argc > 2)
+                K = atom_getfloat(argv+2);
+            if (argc > 3)
+                D = atom_getfloat(argv+3);
+            if (argc > 4)
+                D2 = atom_getfloat(argv+4);
+            
+        } else {
+            // check the other arguments
+            if (argc > 0)
+                L = atom_getfloat(argv);
+            if (argc > 1)
+                K = atom_getfloat(argv+1);
+            if (argc > 2)
+                D = atom_getfloat(argv+2);
+            if (argc > 3)
+                D2 = atom_getfloat(argv+3);
+        }
+//        post("L: %f, K; %f, D: %f, D2: %f", L, K, D, D2);
+        x->raideur = K;
+        x->viscosite = D;
+        x->longueur = L;
 
-    x->m_proxy = proxy_new(x, 1, NULL);
- 
-    // two outlets
-    x->force2 = outlet_new(x, NULL);
-    x->force1 = outlet_new(x, NULL);
-    
+        x->D2 = D2;
 
-  x->position2Dx1 = 0;
-  x->position2Dx2 = 0;
-  x->position2Dy1 = 0;
-  x->position2Dy2 = 0;
-    
-    double K, D, L, D2 = 0.0;
-    
-    x->x_sym = (argc && atom_gettype(argv) == A_SYM) ? atom_getsym(argv) : NULL;
-    
-    if (x->x_sym) {
-        object_subscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
+        x->Lmin = 0;
+        x->Lmax = 10000;
+        x->muscle = 1;
+
+        x->distance_old = x->longueur;
     }
     
-    // check the other arguments
-    if(argc > 0) {
-        argv++;
-        if(atom_gettype(argv) == A_FLOAT)
-            L = atom_getfloat(argv);
-        else if(atom_gettype(argv) == A_LONG)
-            L = atom_getlong(argv);
-    }
-    if(argc > 1) {
-        argv++;
-        if(atom_gettype(argv) == A_FLOAT)
-            K = atom_getfloat(argv);
-        else if(atom_gettype(argv) == A_LONG)
-            K = atom_getlong(argv);
-    }
-    if(argc > 2) {
-        argv++;
-        if(atom_gettype(argv) == A_FLOAT)
-            D = atom_getfloat(argv);
-        else if(atom_gettype(argv) == A_LONG)
-            D = atom_getlong(argv);
-    }
-    if(argc > 3) {
-        argv++;
-        if(atom_gettype(argv) == A_FLOAT)
-            D2 = atom_getfloat(argv);
-        else if(atom_gettype(argv) == A_LONG)
-            D2 = atom_getlong(argv);
-    }
-
-  x->raideur = K;
-  x->viscosite = D;
-  x->longueur = L;
-
-  x->D2 = D2;
-
-  x->Lmin = 0;
-  x->Lmax = 10000;
-  x->muscle = 1;
-
-  x->distance_old = x->longueur;
-
   return (x);
 }
 
@@ -291,7 +270,6 @@ void ext_main(void* r)
         (method)link2D_free,
 		sizeof(t_link2D),
         0L, A_GIMME, 0L);
-//                           A_DEFSYM, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
 
 
     class_addmethod(link2D_class, (method)link2D_bang, "bang", 0);

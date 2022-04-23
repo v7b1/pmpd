@@ -40,14 +40,25 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
-					"fontname" : "Arial",
-					"fontsize" : 9.0,
-					"id" : "obj-1",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 167.0, 575.0, 55.0, 19.0 ],
-					"text" : "print out2"
+					"id" : "obj-45",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 73.5, 613.0, 112.5, 22.0 ],
+					"text" : "force2D 0. 0."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-44",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 38.5, 584.0, 112.5, 22.0 ],
+					"text" : "force2D -0. -0."
 				}
 
 			}
@@ -66,26 +77,13 @@
 , 			{
 				"box" : 				{
 					"fontname" : "Arial",
-					"fontsize" : 9.0,
-					"id" : "obj-3",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 105.0, 574.0, 55.0, 19.0 ],
-					"text" : "print out1"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"fontname" : "Arial",
 					"fontsize" : 10.0,
 					"id" : "obj-4",
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 322.0, 632.0, 270.0, 18.0 ],
-					"text" : "forces depend of the physicals properies of the liaison"
+					"text" : "forces depend on the physical properies of the link"
 				}
 
 			}
@@ -512,7 +510,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 105.0, 550.0, 72.0, 20.0 ],
+					"patching_rect" : [ 105.0, 550.0, 81.0, 20.0 ],
 					"text" : "pmpd.link2D"
 				}
 
@@ -566,8 +564,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 202.0, 649.0, 380.0, 18.0 ],
-					"text" : "this object is a 3D version of link. more exemple can be find in the link help"
+					"patching_rect" : [ 202.0, 649.0, 403.0, 18.0 ],
+					"text" : "this object is a 2D version of pmpd.link. more exemple can be found in the pmpd.link help"
 				}
 
 			}
@@ -689,15 +687,15 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-1", 0 ],
-					"source" : [ "obj-36", 1 ]
+					"destination" : [ "obj-44", 1 ],
+					"source" : [ "obj-36", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-3", 0 ],
-					"source" : [ "obj-36", 0 ]
+					"destination" : [ "obj-45", 1 ],
+					"source" : [ "obj-36", 1 ]
 				}
 
 			}

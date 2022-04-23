@@ -3,14 +3,14 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 1,
-			"revision" : 7,
+			"minor" : 2,
+			"revision" : 2,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 468.0, 240.0, 683.0, 602.0 ],
+		"rect" : [ 258.0, 66.0, 990.0, 841.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 13.0,
@@ -40,13 +40,195 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-32",
-					"maxclass" : "number",
+					"id" : "obj-64",
+					"linecount" : 5,
+					"maxclass" : "comment",
 					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "bang" ],
+					"numoutlets" : 0,
+					"patching_rect" : [ 24.0, 85.0, 621.0, 79.0 ],
+					"text" : "pmpd is designed to implement particle physical models. The model is based on a two element types: mass and link. \nThe pmpd masses are the principal objects of the model. They've got only one physical parameter, the value of their mass. They can be mobile or fixed.\nLinks connect masses two by two. They've got 4 physical parameters : length, rigidity, damping and power."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-62",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 470.0, 701.0, 69.0, 21.0 ],
+					"text" : "statistics..."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-60",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 461.5, 724.0, 94.0, 23.0 ],
+					"text" : "massPosMean"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-58",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 697.0, 733.5, 150.0, 50.0 ],
+					"text" : "check Pd help file of pmpd for a complete list of messages"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-56",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 386.5, 724.0, 62.0, 23.0 ],
+					"text" : "massPos"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-54",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 561.5, 247.0, 70.0, 23.0 ],
+					"text" : "print pmpd"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-53",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 136.5, 362.5, 117.0, 36.0 ],
+					"text" : "Output all masses positions in a list"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"hidden" : 1,
+					"id" : "obj-51",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 376.0, 529.0, 96.0, 23.0 ],
+					"text" : "loadmess set 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"hidden" : 1,
+					"id" : "obj-50",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 545.0, 525.0, 107.0, 23.0 ],
+					"text" : "loadmess set 0.5"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-48",
+					"maxclass" : "button",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 158.0, 256.0, 50.0, 23.0 ]
+					"patching_rect" : [ 234.0, 567.0, 24.0, 24.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-44",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 540.5, 432.0, 199.0, 21.0 ],
+					"text" : "send position update of mass 'fix'"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-42",
+					"linecount" : 4,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 660.0, 29.0, 294.0, 65.0 ],
+					"text" : "Originally created for Pd by Cyrille Henry (2011), \nbased on msd by Nicolas Montgermont.\n\nMaxMSP port by Volker Böhm (2021/22)."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-40",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 82.0, 282.5, 78.0, 50.0 ],
+					"text" : "create structure of the model",
+					"textjustification" : 1
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-38",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 30.0, 643.5, 145.0, 36.0 ],
+					"text" : "delete all masses, links and internal variables",
+					"textjustification" : 1
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-36",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 178.0, 650.0, 37.0, 23.0 ],
+					"text" : "reset"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-34",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 45.0, 600.0, 131.0, 36.0 ],
+					"text" : "post current physical model topology",
+					"textjustification" : 1
 				}
 
 			}
@@ -56,7 +238,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 234.0, 519.0, 173.0, 21.0 ],
+					"patching_rect" : [ 386.5, 669.0, 173.0, 21.0 ],
 					"text" : "these freak out quite easily..."
 				}
 
@@ -71,8 +253,9 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 292.0, 132.5, 14.0, 139.0 ],
+					"patching_rect" : [ 466.0, 279.5, 14.0, 139.0 ],
 					"setminmax" : [ 0.0, 127.0 ],
+					"slidercolor" : [ 0.513725490196078, 0.658823529411765, 0.815686274509804, 1.0 ],
 					"spacing" : 1
 				}
 
@@ -84,30 +267,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 290.5, 100.0, 58.0, 23.0 ],
+					"patching_rect" : [ 464.5, 247.0, 58.0, 23.0 ],
 					"text" : "zl.slice 1"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-26",
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 309.0, 368.0, 88.0, 21.0 ],
-					"text" : "Zähflüssigkeit"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-22",
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 209.0, 368.0, 67.0, 21.0 ],
-					"text" : "Starrheit"
 				}
 
 			}
@@ -117,7 +278,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 169.0, 204.0, 107.0, 21.0 ],
+					"patching_rect" : [ 357.0, 296.0, 107.0, 21.0 ],
 					"text" : "move first slider !"
 				}
 
@@ -125,23 +286,23 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-31",
+					"linecount" : 2,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 399.0, 444.0, 192.0, 21.0 ],
-					"text" : "add force on all mobile masses"
+					"patching_rect" : [ 605.0, 577.0, 102.0, 36.0 ],
+					"text" : "add force to all mobile masses"
 				}
 
 			}
 , 			{
 				"box" : 				{
 					"id" : "obj-29",
-					"linecount" : 2,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 216.0, 397.0, 150.0, 36.0 ],
-					"text" : "set rigidity and viscosity of links"
+					"patching_rect" : [ 337.0, 561.0, 258.5, 21.0 ],
+					"text" : "set rigidity and viscosity (damping) of links"
 				}
 
 			}
@@ -152,8 +313,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 429.0, 478.0, 104.0, 23.0 ],
-					"text" : "forceX mob 20."
+					"patching_rect" : [ 605.0, 619.0, 104.0, 23.0 ],
+					"text" : "forceX mob 10."
 				}
 
 			}
@@ -166,7 +327,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 319.5, 449.0, 50.0, 23.0 ]
+					"patching_rect" : [ 489.5, 590.0, 50.0, 23.0 ]
 				}
 
 			}
@@ -179,7 +340,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 216.0, 449.0, 50.0, 23.0 ]
+					"patching_rect" : [ 376.0, 590.0, 50.0, 23.0 ]
 				}
 
 			}
@@ -190,7 +351,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 319.5, 478.0, 95.0, 23.0 ],
+					"patching_rect" : [ 489.5, 619.0, 95.0, 23.0 ],
 					"text" : "setD souple $1"
 				}
 
@@ -202,7 +363,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 216.0, 478.0, 95.0, 23.0 ],
+					"patching_rect" : [ 376.0, 619.0, 95.0, 23.0 ],
 					"text" : "setK souple $1"
 				}
 
@@ -214,7 +375,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 13.0, 403.5, 34.0, 23.0 ],
+					"patching_rect" : [ 178.0, 606.5, 34.0, 23.0 ],
 					"text" : "print"
 				}
 
@@ -225,7 +386,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 287.5, 315.0, 66.0, 23.0 ],
+					"patching_rect" : [ 461.5, 462.0, 66.0, 23.0 ],
 					"text" : "s pmpd-in"
 				}
 
@@ -237,8 +398,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 287.5, 283.0, 73.0, 23.0 ],
-					"text" : "posX fix $1"
+					"patching_rect" : [ 461.5, 430.0, 64.0, 23.0 ],
+					"text" : "pos fix $1"
 				}
 
 			}
@@ -252,9 +413,9 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 309.0, 132.5, 196.0, 140.0 ],
+					"patching_rect" : [ 483.0, 279.5, 436.0, 139.0 ],
 					"setminmax" : [ 0.0, 127.0 ],
-					"size" : 20,
+					"size" : 40,
 					"spacing" : 1
 				}
 
@@ -266,7 +427,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 290.5, 69.0, 116.0, 23.0 ],
+					"patching_rect" : [ 464.5, 216.0, 116.0, 23.0 ],
 					"text" : "route massesPosL"
 				}
 
@@ -277,7 +438,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 79.0, 478.0, 74.0, 23.0 ],
+					"patching_rect" : [ 259.0, 738.0, 74.0, 23.0 ],
 					"text" : "s pmpd-out"
 				}
 
@@ -289,19 +450,21 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 290.5, 34.0, 71.0, 23.0 ],
+					"patching_rect" : [ 464.5, 186.0, 71.0, 23.0 ],
 					"text" : "r pmpd-out"
 				}
 
 			}
 , 			{
 				"box" : 				{
+					"bgcolor" : [ 0.556862745098039, 0.156862745098039, 0.156862745098039, 1.0 ],
+					"fontsize" : 20.0,
 					"id" : "obj-14",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 79.0, 444.0, 41.0, 23.0 ],
+					"patching_rect" : [ 259.0, 688.0, 59.0, 31.0 ],
 					"text" : "pmpd"
 				}
 
@@ -313,7 +476,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 79.25, 297.0, 119.0, 23.0 ],
+					"patching_rect" : [ 253.25, 369.0, 119.0, 23.0 ],
 					"text" : "bang, massesPosL"
 				}
 
@@ -325,7 +488,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 79.25, 266.0, 60.0, 23.0 ],
+					"patching_rect" : [ 253.25, 296.0, 60.0, 23.0 ],
 					"text" : "metro 20"
 				}
 
@@ -338,7 +501,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 79.25, 225.0, 24.0, 24.0 ]
+					"patching_rect" : [ 253.25, 255.0, 24.0, 24.0 ]
 				}
 
 			}
@@ -349,7 +512,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 79.0, 91.0, 62.0, 23.0 ],
+					"patching_rect" : [ 253.0, 197.0, 62.0, 23.0 ],
 					"text" : "loadbang"
 				}
 
@@ -362,7 +525,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 22.0, 137.0, 24.0, 24.0 ]
+					"patching_rect" : [ 167.0, 256.0, 24.0, 24.0 ]
 				}
 
 			}
@@ -373,7 +536,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 79.0, 412.0, 63.0, 23.0 ],
+					"patching_rect" : [ 259.0, 613.0, 63.0, 23.0 ],
 					"text" : "r pmpd-in"
 				}
 
@@ -384,7 +547,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 79.0, 338.0, 66.0, 23.0 ],
+					"patching_rect" : [ 253.25, 430.0, 66.0, 23.0 ],
 					"text" : "s pmpd-in"
 				}
 
@@ -399,14 +562,14 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 8,
-							"minor" : 1,
-							"revision" : 7,
+							"minor" : 2,
+							"revision" : 2,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 245.0, 276.0, 786.0, 658.0 ],
+						"rect" : [ 74.0, 231.0, 680.0, 608.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 13.0,
@@ -436,24 +599,62 @@
 						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
-									"id" : "obj-21",
-									"maxclass" : "newobj",
+									"id" : "obj-26",
+									"linecount" : 2,
+									"maxclass" : "comment",
 									"numinlets" : 1,
-									"numoutlets" : 1,
-									"outlettype" : [ "" ],
-									"patching_rect" : [ 457.5, 152.0, 82.0, 23.0 ],
-									"text" : "loadmess 20"
+									"numoutlets" : 0,
+									"patching_rect" : [ 166.0, 16.0, 447.0, 36.0 ],
+									"text" : "Creation messages are used to define the structure of the model. \nMessages create links and masses or destroy them."
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-24",
+									"linecount" : 3,
+									"maxclass" : "comment",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 289.5, 432.0, 207.0, 50.0 ],
+									"text" : "[$6] : Power of the rigidity distance\n[$7] : minimum length of link\n[$8] : maximum lenght of link"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-22",
+									"linecount" : 6,
+									"maxclass" : "comment",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 289.5, 327.0, 182.0, 94.0 ],
+									"text" : "add link:\n$1 : Id (symbol)\n$2 : creation No/Id of mass1\n$3 : creation No/Id of mass2\n$4 : rigidity (K)\n$5 : damping (D) viscosity?"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-11",
+									"linecount" : 5,
+									"maxclass" : "comment",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 403.5, 219.0, 150.0, 79.0 ],
+									"text" : "add mass:\n$1 : Id (symbol)\n$2 : fixed or mobile (0/1)\n$3 : mass\n$4 : initial position"
 								}
 
 							}
 , 							{
 								"box" : 								{
 									"id" : "obj-17",
+									"linecount" : 2,
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 515.0, 206.0, 150.0, 21.0 ],
-									"text" : "number of masses"
+									"patching_rect" : [ 197.5, 138.0, 75.0, 36.0 ],
+									"text" : "number of masses",
+									"textjustification" : 1
 								}
 
 							}
@@ -464,8 +665,8 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "int" ],
-									"patching_rect" : [ 437.0, 482.0, 29.5, 23.0 ],
-									"text" : "- 1"
+									"patching_rect" : [ 202.0, 261.0, 29.5, 23.0 ],
+									"text" : "+ 1"
 								}
 
 							}
@@ -476,7 +677,7 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 419.75, 516.0, 36.0, 23.0 ],
+									"patching_rect" : [ 184.75, 290.0, 36.0, 23.0 ],
 									"text" : "pack"
 								}
 
@@ -484,11 +685,12 @@
 , 							{
 								"box" : 								{
 									"id" : "obj-18",
+									"linecount" : 2,
 									"maxclass" : "message",
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 419.75, 548.0, 139.0, 23.0 ],
+									"patching_rect" : [ 184.75, 333.0, 81.0, 38.0 ],
 									"text" : "link souple $1 $2 1 0.5"
 								}
 
@@ -500,8 +702,8 @@
 									"numinlets" : 2,
 									"numoutlets" : 3,
 									"outlettype" : [ "bang", "bang", "int" ],
-									"patching_rect" : [ 396.0, 451.0, 43.0, 23.0 ],
-									"text" : "uzi 20"
+									"patching_rect" : [ 161.0, 223.0, 54.0, 23.0 ],
+									"text" : "uzi 40 0"
 								}
 
 							}
@@ -525,7 +727,7 @@
 									"numoutlets" : 2,
 									"outlettype" : [ "", "bang" ],
 									"parameter_enable" : 0,
-									"patching_rect" : [ 457.5, 206.0, 50.0, 23.0 ]
+									"patching_rect" : [ 210.0, 176.0, 50.0, 23.0 ]
 								}
 
 							}
@@ -536,8 +738,8 @@
 									"numinlets" : 2,
 									"numoutlets" : 3,
 									"outlettype" : [ "bang", "bang", "int" ],
-									"patching_rect" : [ 136.5, 197.0, 43.0, 23.0 ],
-									"text" : "uzi 20"
+									"patching_rect" : [ 287.5, 223.0, 43.0, 23.0 ],
+									"text" : "uzi 40"
 								}
 
 							}
@@ -547,7 +749,7 @@
 									"maxclass" : "newobj",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 85.75, 525.0, 66.0, 23.0 ],
+									"patching_rect" : [ 184.75, 540.0, 66.0, 23.0 ],
 									"text" : "s pmpd-in"
 								}
 
@@ -555,24 +757,13 @@
 , 							{
 								"box" : 								{
 									"id" : "obj-12",
+									"linecount" : 2,
 									"maxclass" : "message",
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 34.0, 451.0, 115.0, 23.0 ],
+									"patching_rect" : [ 33.0, 158.0, 75.0, 38.0 ],
 									"text" : "Xmax 127, Xmin 0"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-10",
-									"maxclass" : "message",
-									"numinlets" : 2,
-									"numoutlets" : 1,
-									"outlettype" : [ "" ],
-									"patching_rect" : [ 85.75, 309.0, 370.0, 23.0 ],
-									"text" : "link souple 1 0 1 0.5, link souple 1 2 1 0.5, link souple 2 3 1 0.5"
 								}
 
 							}
@@ -583,7 +774,7 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 136.5, 234.0, 108.0, 23.0 ],
+									"patching_rect" : [ 287.5, 260.0, 108.0, 23.0 ],
 									"text" : "mass mob 1 10 0"
 								}
 
@@ -595,7 +786,7 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 188.25, 162.0, 96.0, 23.0 ],
+									"patching_rect" : [ 415.5, 158.0, 96.0, 23.0 ],
 									"text" : "mass fix 0 10 0"
 								}
 
@@ -607,7 +798,7 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 240.0, 128.0, 37.0, 23.0 ],
+									"patching_rect" : [ 543.0, 158.0, 37.0, 23.0 ],
 									"text" : "reset"
 								}
 
@@ -619,7 +810,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 5,
 									"outlettype" : [ "bang", "bang", "bang", "bang", "bang" ],
-									"patching_rect" : [ 33.0, 84.0, 226.0, 23.0 ],
+									"patching_rect" : [ 33.0, 84.0, 529.0, 23.0 ],
 									"text" : "t b b b b b"
 								}
 
@@ -648,13 +839,7 @@
 , 							{
 								"patchline" : 								{
 									"destination" : [ "obj-13", 0 ],
-									"source" : [ "obj-10", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-13", 0 ],
+									"midpoints" : [ 42.5, 526.0, 194.25, 526.0 ],
 									"source" : [ "obj-12", 0 ]
 								}
 
@@ -740,14 +925,8 @@
 							}
 , 							{
 								"patchline" : 								{
-									"destination" : [ "obj-9", 0 ],
-									"source" : [ "obj-21", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
 									"destination" : [ "obj-13", 0 ],
+									"midpoints" : [ 552.5, 527.5, 194.25, 527.5 ],
 									"source" : [ "obj-4", 0 ]
 								}
 
@@ -776,7 +955,7 @@
 , 							{
 								"patchline" : 								{
 									"destination" : [ "obj-16", 1 ],
-									"order" : 0,
+									"order" : 1,
 									"source" : [ "obj-9", 0 ]
 								}
 
@@ -784,7 +963,7 @@
 , 							{
 								"patchline" : 								{
 									"destination" : [ "obj-5", 1 ],
-									"order" : 1,
+									"order" : 0,
 									"source" : [ "obj-9", 0 ]
 								}
 
@@ -792,7 +971,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 22.0, 172.0, 36.0, 23.0 ],
+					"patching_rect" : [ 167.0, 296.0, 36.0, 23.0 ],
 					"saved_object_attributes" : 					{
 						"description" : "",
 						"digest" : "",
@@ -811,8 +990,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 22.0, 58.0, 204.0, 21.0 ],
-					"text" : "physical modeling, based on msd."
+					"patching_rect" : [ 24.0, 58.0, 375.0, 21.0 ],
+					"text" : "physical modeling (mass-spring-damper model), based on msd."
 				}
 
 			}
@@ -824,7 +1003,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 22.0, 14.0, 90.0, 40.0 ],
+					"patching_rect" : [ 24.0, 13.0, 90.0, 40.0 ],
 					"text" : "pmpd"
 				}
 
@@ -869,6 +1048,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-28", 0 ],
 					"source" : [ "obj-17", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-54", 0 ],
+					"source" : [ "obj-17", 1 ]
 				}
 
 			}
@@ -930,8 +1116,8 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-10", 1 ],
-					"source" : [ "obj-32", 0 ]
+					"destination" : [ "obj-14", 0 ],
+					"source" : [ "obj-36", 0 ]
 				}
 
 			}
@@ -944,8 +1130,45 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-14", 0 ],
+					"source" : [ "obj-48", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-25", 0 ],
+					"hidden" : 1,
+					"source" : [ "obj-50", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-21", 0 ],
+					"hidden" : 1,
+					"source" : [ "obj-51", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-14", 0 ],
+					"source" : [ "obj-56", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-3", 0 ],
 					"source" : [ "obj-6", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-14", 0 ],
+					"source" : [ "obj-60", 0 ]
 				}
 
 			}

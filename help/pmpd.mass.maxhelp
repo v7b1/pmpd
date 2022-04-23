@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 515.0, 193.0, 700.0, 579.0 ],
+		"rect" : [ 28.0, 260.0, 767.0, 601.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 13.0,
@@ -40,6 +40,103 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-43",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 219.0, 338.5, 133.0, 36.0 ],
+					"text" : "resets the total forces applied to the mass"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-41",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 454.5, 338.5, 163.5, 36.0 ],
+					"text" : "resets position to its initial value and forces to zero"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-38",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 343.0, 201.0, 29.5, 23.0 ],
+					"text" : "-2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-37",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 343.0, 174.0, 29.5, 23.0 ],
+					"text" : "-1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-39",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 545.0, 115.0, 161.0, 36.0 ],
+					"text" : "send messages to named objects using pmpd.s",
+					"textjustification" : 1
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-32",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 22.0, 53.0, 209.0, 21.0 ],
+					"text" : "Get link forces and output position."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-27",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 343.0, 145.0, 29.5, 23.0 ],
+					"text" : "1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 1,
+					"fontsize" : 24.0,
+					"id" : "obj-25",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 22.0, 14.0, 142.0, 33.0 ],
+					"text" : "pmpd.mass"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"format" : 6,
 					"id" : "obj-35",
 					"maxclass" : "flonum",
@@ -47,7 +144,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 589.0, 240.0, 50.0, 23.0 ]
+					"patching_rect" : [ 667.0, 240.0, 50.0, 23.0 ]
 				}
 
 			}
@@ -58,7 +155,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 3.0, 245.5, 65.0, 36.0 ],
+					"patching_rect" : [ 18.0, 258.0, 65.0, 36.0 ],
 					"text" : "compute output",
 					"textjustification" : 1
 				}
@@ -70,8 +167,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 253.0, 233.0, 59.0, 21.0 ],
-					"text" : "set limits"
+					"patching_rect" : [ 237.0, 250.0, 175.0, 21.0 ],
+					"text" : "set minmax limits for position"
 				}
 
 			}
@@ -81,8 +178,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 129.0, 138.0, 74.0, 21.0 ],
-					"presentation_linecount" : 2,
+					"patching_rect" : [ 158.0, 155.0, 74.0, 21.0 ],
 					"text" : "set position"
 				}
 
@@ -93,7 +189,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 64.5, 138.0, 61.0, 21.0 ],
+					"patching_rect" : [ 93.5, 155.0, 61.0, 21.0 ],
 					"text" : "set mass"
 				}
 
@@ -105,7 +201,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 218.0, 128.0, 79.0, 36.0 ],
+					"patching_rect" : [ 246.0, 137.0, 79.0, 36.0 ],
 					"text" : "adds force to this mass"
 				}
 
@@ -116,7 +212,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 208.0, 340.0, 290.0, 21.0 ],
+					"patching_rect" : [ 237.0, 405.0, 290.0, 21.0 ],
 					"text" : "args: receive address, initial mass, initial position"
 				}
 
@@ -129,7 +225,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 488.0, 154.0, 24.0, 24.0 ]
+					"patching_rect" : [ 572.0, 161.0, 24.0, 24.0 ]
 				}
 
 			}
@@ -140,7 +236,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 488.0, 193.0, 67.0, 23.0 ],
+					"patching_rect" : [ 572.0, 200.0, 67.0, 23.0 ],
 					"text" : "metro 100"
 				}
 
@@ -152,7 +248,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 532.0, 233.0, 37.0, 23.0 ],
+					"patching_rect" : [ 616.0, 240.0, 37.0, 23.0 ],
 					"text" : "reset"
 				}
 
@@ -165,7 +261,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 488.0, 233.0, 24.0, 24.0 ]
+					"patching_rect" : [ 572.0, 240.0, 24.0, 24.0 ]
 				}
 
 			}
@@ -175,7 +271,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 488.0, 278.0, 76.0, 23.0 ],
+					"patching_rect" : [ 572.0, 285.0, 76.0, 23.0 ],
 					"text" : "pmpd.s aha"
 				}
 
@@ -186,7 +282,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 260.0, 386.0, 150.0, 21.0 ],
+					"patching_rect" : [ 289.0, 451.0, 101.0, 21.0 ],
 					"text" : "velocity of mass"
 				}
 
@@ -197,7 +293,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 208.0, 418.0, 150.0, 21.0 ],
+					"patching_rect" : [ 237.0, 483.0, 83.0, 21.0 ],
 					"text" : "force applied"
 				}
 
@@ -208,7 +304,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 155.0, 451.0, 113.0, 21.0 ],
+					"patching_rect" : [ 184.0, 511.0, 113.0, 21.0 ],
 					"text" : "x position of mass"
 				}
 
@@ -220,7 +316,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 200.0, 260.0, 168.0, 23.0 ],
+					"patching_rect" : [ 237.0, 277.0, 168.0, 23.0 ],
 					"text" : "setXmin -100, setXmax 100"
 				}
 
@@ -234,7 +330,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 175.0, 386.0, 83.0, 23.0 ]
+					"patching_rect" : [ 204.0, 451.0, 83.0, 23.0 ]
 				}
 
 			}
@@ -247,7 +343,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 123.0, 416.0, 83.0, 23.0 ]
+					"patching_rect" : [ 152.0, 481.0, 83.0, 23.0 ]
 				}
 
 			}
@@ -260,7 +356,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 70.0, 445.0, 83.0, 23.0 ]
+					"patching_rect" : [ 99.0, 510.0, 83.0, 23.0 ]
 				}
 
 			}
@@ -272,7 +368,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 23.5, 283.5, 24.0, 24.0 ]
+					"patching_rect" : [ 38.5, 296.0, 24.0, 24.0 ]
 				}
 
 			}
@@ -285,7 +381,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 139.0, 167.0, 50.0, 23.0 ]
+					"patching_rect" : [ 168.0, 184.0, 50.0, 23.0 ]
 				}
 
 			}
@@ -296,7 +392,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 139.0, 200.0, 53.0, 23.0 ],
+					"patching_rect" : [ 168.0, 217.0, 53.0, 23.0 ],
 					"text" : "setX $1"
 				}
 
@@ -310,7 +406,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 70.0, 167.0, 50.0, 23.0 ]
+					"patching_rect" : [ 99.0, 184.0, 50.0, 23.0 ]
 				}
 
 			}
@@ -321,7 +417,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 70.0, 200.0, 55.0, 23.0 ],
+					"patching_rect" : [ 99.0, 217.0, 55.0, 23.0 ],
 					"text" : "setM $1"
 				}
 
@@ -333,7 +429,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
-					"patching_rect" : [ 71.0, 340.0, 123.0, 23.0 ],
+					"patching_rect" : [ 100.0, 405.0, 123.0, 23.0 ],
 					"text" : "pmpd.mass aha 2 3"
 				}
 
@@ -341,12 +437,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-2",
-					"linecount" : 4,
+					"linecount" : 3,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 93.0, 23.0, 495.0, 65.0 ],
-					"text" : "mass : get liaison forces and output position\nthe sum of the forces applied to a mass modify its velocity (depending of its weight). the position his change according to the velocity and the weight of the mass\nM is positive. negative value give non physical things."
+					"patching_rect" : [ 242.0, 24.0, 495.0, 50.0 ],
+					"text" : "The sum of the forces applied to a mass modify its velocity (depending of its weight). The position is changed according to the velocity and the weight of the mass.\nM is positive. Negative values produce non physical behaviour."
 				}
 
 			}
@@ -357,7 +453,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 228.0, 295.0, 37.0, 23.0 ],
+					"patching_rect" : [ 412.0, 345.0, 37.0, 23.0 ],
 					"text" : "reset"
 				}
 
@@ -369,7 +465,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 267.0, 295.0, 45.0, 23.0 ],
+					"patching_rect" : [ 360.0, 345.0, 45.0, 23.0 ],
 					"text" : "resetF"
 				}
 
@@ -383,7 +479,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 228.0, 167.0, 50.0, 23.0 ]
+					"patching_rect" : [ 257.0, 184.0, 50.0, 23.0 ]
 				}
 
 			}
@@ -446,6 +542,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-23", 0 ],
+					"source" : [ "obj-27", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-13", 0 ],
 					"source" : [ "obj-3", 0 ]
 				}
@@ -469,6 +572,20 @@
 				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-35", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-23", 0 ],
+					"source" : [ "obj-37", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-23", 0 ],
+					"source" : [ "obj-38", 0 ]
 				}
 
 			}

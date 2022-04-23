@@ -242,9 +242,9 @@ void mass2D_reset(t_mass2D *x)
   SETFLOAT(&(x->vitesse[1]), 0 );
   SETFLOAT(&(x->vitesse[2]), 0 );
 
-  outlet_anything(x->vitesse_out, gensym("velocity2D"), 3, x->vitesse);
-  outlet_anything(x->force_out, gensym("force2D"), 3, x->force); 
-  outlet_anything(x->position2D_out, gensym("position2D"), 2, x->pos_new);
+  outlet_anything(x->vitesse_out, ps_velocity2D, 3, x->vitesse);
+  outlet_anything(x->force_out, ps_force2D, 3, x->force);
+  outlet_anything(x->position2D_out, ps_position2D, 2, x->pos_new);
 }
 
 void mass2D_resetf(t_mass2D *x)
@@ -266,10 +266,12 @@ void mass2D_setXY(t_mass2D *x, double posX, double posY)
   x->posY_old_1 = posY;
   x->forceY=0;
 
-  SETFLOAT(&(x->pos_new[0]), posX );
-  SETFLOAT(&(x->pos_new[1]), posY );
+//  SETFLOAT(&(x->pos_new[0]), posX );
+    atom_setfloat(x->pos_new, posX);
+//  SETFLOAT(&(x->pos_new[1]), posY );
+    atom_setfloat(x->pos_new+1, posY);
 
-  outlet_anything(x->position2D_out, gensym("position2D"), 2, x->pos_new);
+  outlet_anything(x->position2D_out, ps_position2D, 2, x->pos_new);
 }
 
 void mass2D_setX(t_mass2D *x, double posX)
@@ -278,9 +280,10 @@ void mass2D_setX(t_mass2D *x, double posX)
   x->posX_old_1 = posX;
   x->forceX=0;
 
-  SETFLOAT(&(x->pos_new[0]), posX );
+//  SETFLOAT(&(x->pos_new[0]), posX );
+    atom_setfloat(x->pos_new, posX);
 
-  outlet_anything(x->position2D_out, gensym("position2D"), 2, x->pos_new);
+  outlet_anything(x->position2D_out, ps_position2D, 2, x->pos_new);
 }
 
 void mass2D_setY(t_mass2D *x, double posY)
@@ -289,14 +292,15 @@ void mass2D_setY(t_mass2D *x, double posY)
   x->posY_old_1 = posY;
   x->forceY=0;
   
-  SETFLOAT(&(x->pos_new[1]), posY );
+//  SETFLOAT(&(x->pos_new[1]), posY );
+    atom_setfloat(x->pos_new+1, posY);
 
-  outlet_anything(x->position2D_out, gensym("position2D"), 2, x->pos_new);
+  outlet_anything(x->position2D_out, ps_position2D, 2, x->pos_new);
 }
 
 void mass2D_loadbang(t_mass2D *x)
 {
-  outlet_anything(x->position2D_out, gensym("position2D"), 2, x->pos_new);
+  outlet_anything(x->position2D_out, ps_position2D, 2, x->pos_new);
 }
 
 
@@ -712,102 +716,144 @@ void mass_notify(t_mass2D *x, t_symbol *s, t_symbol *msg, void *sender, void *da
 
 }
 
+void mass2D_assist(t_mass2D *x, void *b, long m, long a, char *s) {
+    if (m==ASSIST_INLET) {
+        switch(a) {
+            case 0: sprintf (s,"(int/float) adds force to this mass, (bang) compute and output new position"); break;
+                
+        }
+    }
+    else {
+        switch(a) {
+            case 0: sprintf (s,"(list) x/y position of the mass"); break;
+            case 1: sprintf (s,"(list) x/y and total force applied to the mass"); break;
+            case 2: sprintf (s,"(list) x/y and total velocity of the mass"); break;
+        }
+        
+    }
+}
+
+
+
 void *mass2D_new(t_symbol *s, int argc, t_atom *argv)
 {
  
   t_mass2D *x = (t_mass2D *)object_alloc(mass2D_class);
-
-  x->x_sym = atom_getsymbolarg(0, argc, argv);
-  x->x_state = makeseed2D();
-
-//  pd_bind(&x->x_obj.ob_pd, atom_getsymbolarg(0, argc, argv));
-
-//  x->position2D_new=outlet_new(&x->x_obj, 0);
-//  x->force_out=outlet_new(&x->x_obj, 0);
-//  x->vitesse_out=outlet_new(&x->x_obj, 0);
     
-    
-    x->vitesse_out = outlet_new((t_object *)x, NULL);
-    x->force_out = outlet_new((t_object *)x, NULL);
-    x->position2D_out = outlet_new((t_object *)x, NULL);
-    
+    if (x) {
+        long offset = attr_args_offset(argc, argv);
 
-  x->forceX=0;
-  x->forceY=0;
-    
-    if (x->x_sym) {
-        object_subscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
+        x->x_state = makeseed2D();
+          
+        // create outlets
+        x->vitesse_out = outlet_new((t_object *)x, NULL);
+        x->force_out = outlet_new((t_object *)x, NULL);
+        x->position2D_out = outlet_new((t_object *)x, NULL);
+          
+
+        x->forceX=0;
+        x->forceY=0;
+        x->onoff = 1;
+        x->VX = 0;
+        x->VY = 0;
+
+        x->dX=0;
+        x->dY=0;
+        x->mass2D = 1;
+        x->Xinit = x->Yinit = 0;
+        
+        x->minX = x->minY = -100000;
+        x->maxX = x->maxY = 100000;
+        x->seuil = x->damp = 0;
+        
+        x->x_sym = NULL;
+        
+
+        if (offset > 0) {
+            // process arguments
+            
+            if (atom_gettype(argv) == A_SYM)
+            {
+                x->x_sym = atom_getsym(argv);
+                if (x->x_sym != ps_nothing) {
+                    object_subscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
+                } else {
+                    x->x_sym = NULL;
+                }
+                
+                if (offset > 1) {
+                    x->mass2D = atom_getfloat(argv+1);
+                    post("mass: %f", x->mass2D);
+                }
+                
+                if (offset > 2) {
+                    x->Xinit = atom_getfloat(argv+2);
+                    post("Xinit: %f", x->Xinit);
+                }
+                if (offset > 3) {
+                    x->Yinit = atom_getfloat(argv+3);
+                    post("Yinit: %f", x->Yinit);
+                }
+            }
+            
+            else {      // no receive address
+                x->mass2D = atom_getfloat(argv);
+                post("mass: %f", x->mass2D);
+                
+                if (offset > 1) {
+                    x->Xinit = atom_getfloat(argv+1);
+                    post("Xinit: %f", x->Xinit);
+                }
+                if (offset > 2) {
+                    x->Yinit = atom_getfloat(argv+2);
+                    post("Yinit: %f", x->Yinit);
+                }
+            }
+            
+        }
+        
+        x->posX_old_1 = x->Xinit;
+        x->posX_old_2 = x->Xinit;
+        SETFLOAT(&(x->pos_new[0]),  x->Xinit);
+        
+        x->posY_old_1 = x->Yinit;
+        x->posY_old_2 = x->Yinit;
+        SETFLOAT(&(x->pos_new[1]),  x->Yinit);
+        
+        
+        attr_args_process(x, (short)argc, argv+offset);
+        
+
+//        if (argc >= 5)
+//          x->minX = atom_getfloatarg(4, argc, argv);
+//
+//        if (argc >= 6)
+//          x->maxX = atom_getfloatarg(5, argc, argv);
+//
+//        if (argc >= 7)
+//          x->minY = atom_getfloatarg(6, argc, argv);
+//
+//        if (argc >= 8)
+//          x->maxY = atom_getfloatarg(7, argc, argv);
+//
+//        if (argc >= 9)
+//          x->seuil = atom_getfloatarg(8, argc, argv);
+//
+//        if (argc >= 10)
+//          x->damp = atom_getfloatarg(9, argc, argv);
+          
     }
-
-  if (argc >= 2)
-    x->mass2D = atom_getfloatarg(1, argc, argv) ;
-  else
-    x->mass2D = 1;
-
-  x->onoff = 1;
-
-  x->VX = 0;
-  x->VY = 0;
-
-  x->dX=0;
-  x->dY=0;
-
-    if (argc >= 3)
-		x->Xinit = atom_getfloatarg(2, argc, argv);
-	else
-		x->Xinit = 0 ;
-
-	x->posX_old_1 = x->Xinit ;
-	x->posX_old_2 = x->Xinit;
-	SETFLOAT(&(x->pos_new[0]),  x->Xinit);
-
-	if (argc >= 4)
-		x->Yinit = atom_getfloatarg(3, argc, argv);
-	else
-		x->Yinit = 0 ;
-
-	x->posY_old_1 = x->Yinit ;
-	x->posY_old_2 = x->Yinit;
-	SETFLOAT(&(x->pos_new[1]),  x->Yinit);
-
-	  if (argc >= 5)
-		x->minX = atom_getfloatarg(4, argc, argv) ;
-	  else 
-		x->minX = -100000;
-
-	  if (argc >= 6)
-		x->maxX = atom_getfloatarg(5, argc, argv) ;
-	  else 
-		x->maxX = 100000;
-	
-	  if (argc >= 7)
-		x->minY = atom_getfloatarg(6, argc, argv) ;
-	  else 
-		x->minY = -100000;
-
-	  if (argc >= 8)
-		x->maxY = atom_getfloatarg(7, argc, argv) ;
-	  else 
-		x->maxY = 100000;
-
-	  if (argc >= 9)
-		x->seuil = atom_getfloatarg(8, argc, argv) ;
-	  else 
-		x->seuil = 0;
-
-	  if (argc >= 10)
-		x->damp = atom_getfloatarg(9, argc, argv) ;
-	  else 
-		x->damp = 0;
 
   return (x);
 }
+
 
 static void mass2D_free(t_mass2D *x)
 {
 //    pd_unbind(&x->x_obj.ob_pd, x->x_sym);
     object_unsubscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
 }
+
 
 void ext_main(void* r)
 {
@@ -817,7 +863,6 @@ void ext_main(void* r)
         (method)mass2D_free, sizeof(t_mass2D),
         0, A_GIMME, 0);
 
-//  class_addcreator((t_newmethod)mass2D_new,  "masse2D"), A_GIMME, 0);
 
     class_addmethod(mass2D_class, (method)mass2D_bang, "bang", 0L);
 
@@ -847,8 +892,28 @@ void ext_main(void* r)
   class_addmethod(mass2D_class, (method)mass2D_resetf,  "resetF", 0);
   class_addmethod(mass2D_class, (method)mass2D_loadbang,  "loadbang", 0);
     class_addmethod(mass2D_class, (method)mass_notify, "notify", A_CANT, 0);
+    class_addmethod(mass2D_class, (method)mass2D_assist, "assist", A_CANT,0);
     
     class_register(CLASS_BOX, mass2D_class);
+    
+    CLASS_ATTR_DOUBLE(mass2D_class, "minX", 0, t_mass2D, minX);
+    CLASS_ATTR_SAVE(mass2D_class, "minX", 0);
+    
+    CLASS_ATTR_DOUBLE(mass2D_class, "minY", 0, t_mass2D, minY);
+    CLASS_ATTR_SAVE(mass2D_class, "minY", 0);
+    
+    CLASS_ATTR_DOUBLE(mass2D_class, "maxX", 0, t_mass2D, maxX);
+    CLASS_ATTR_SAVE(mass2D_class, "maxX", 0);
+    
+    CLASS_ATTR_DOUBLE(mass2D_class, "maxY", 0, t_mass2D, maxY);
+    CLASS_ATTR_SAVE(mass2D_class, "maxY", 0);
+    
+    CLASS_ATTR_DOUBLE(mass2D_class, "seuil", 0, t_mass2D, seuil);
+    CLASS_ATTR_SAVE(mass2D_class, "seuil", 0);
+    
+    CLASS_ATTR_DOUBLE(mass2D_class, "damp", 0, t_mass2D, damp);
+    CLASS_ATTR_SAVE(mass2D_class, "damp", 0);
+    
 
     ps_nothing = gensym("");
     ps_pmpd_rr = gensym("pmpd.rr");

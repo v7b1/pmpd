@@ -1,12 +1,6 @@
 #include "c74_max.h"
 #include "pmpd_translate.h"
 
-//#include "math.h"
-//
-//#define max(a,b) ( ((a) > (b)) ? (a) : (b) )
-//#define min(a,b) ( ((a) < (b)) ? (a) : (b) )
-
-
 using namespace c74::max;
 
 
@@ -39,103 +33,138 @@ void *mass3D_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_mass3D *x = (t_mass3D *)object_alloc(mass3D_class);
     
-    x->x_sym = atom_getsym(argv);
-    x->x_state = makeseed3D();
     
-//    pd_bind(&x->x_obj.ob_pd, atom_getsymbolarg(0, argc, argv));
-    
-    x->position3D_new = outlet_new(&x->x_obj, 0);
-    x->force_out = outlet_new(&x->x_obj, 0);
-    x->vitesse_out = outlet_new(&x->x_obj, 0);
-    
-    x->forceX=0;
-    x->forceY=0;
-    x->forceZ=0;
-    
-    if (argc >= 2)
-        x->mass3D = atom_getfloatarg(1, argc, argv) ;
-    else
+    if (x) {
+        long offset = attr_args_offset(argc, argv);
+        
+        x->x_state = makeseed3D();
+        
+        x->vitesse_out = outlet_new(&x->x_obj, 0);
+        x->force_out = outlet_new(&x->x_obj, 0);
+        x->position3D_new = outlet_new(&x->x_obj, 0);
+        
+        x->forceX=0;
+        x->forceY=0;
+        x->forceZ=0;
+        
         x->mass3D = 1;
+        x->Xinit = x->Yinit = x->Zinit = 0;
+        
+        x->minX = x->minY = x->minZ = -100000;
+        x->maxX = x->maxY = x->maxZ = 100000;
+        
+        x->seuil = x->damp = 0;
+        
+        // new stuff (try out)
+        if (offset > 0) {
+            // process arguments
+            
+            if (atom_gettype(argv) == A_SYM)
+            {
+                x->x_sym = atom_getsym(argv);
+
+                if (x->x_sym != ps_nothing) {
+                    object_subscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
+                } else {
+                    x->x_sym = NULL;
+                }
+                if (offset > 1) {
+                    x->mass3D = atom_getfloat(argv+1);
+                }
+                if (offset > 2) {
+                    x->Xinit = atom_getfloat(argv+2);
+                }
+                if (offset > 3) {
+                    x->Yinit = atom_getfloat(argv+3);
+                }
+                if (offset > 4) {
+                    x->Zinit = atom_getfloat(argv+4);
+                }
+            }
+            else {
+                x->mass3D = atom_getfloat(argv);
+                
+                if (offset > 1) {
+                    x->Xinit = atom_getfloat(argv+1);
+                }
+                if (offset > 2) {
+                    x->Yinit = atom_getfloat(argv+2);
+                }
+                if (offset > 3) {
+                    x->Zinit = atom_getfloat(argv+3);
+                }
+            }
+            
+        }
+        
+        x->onoff = 1;
+        
+        x->VX = 0;
+        x->VY = 0;
+        x->VZ = 0;
+        
+        x->dX=0;
+        x->dY=0;
+        x->dZ=0;
+        
+        x->posX_old_1 = x->Xinit ;
+        x->posX_old_2 = x->Xinit;
+        SETFLOAT(&(x->pos_new[0]),  x->Xinit);
+        
+
+        x->posY_old_1 = x->Yinit ;
+        x->posY_old_2 = x->Yinit;
+        SETFLOAT(&(x->pos_new[1]),  x->Yinit);
+        
+        
+        x->posZ_old_1 = x->Zinit ;
+        x->posZ_old_2 = x->Zinit;
+        SETFLOAT(&(x->pos_new[2]),  x->Zinit);
+        
+        attr_args_process(x, (short)argc, argv+offset);
+        
+//        if (argc >= 6)
+//            x->minX = atom_getfloatarg(5, argc, argv) ;
+//
+//
+//        if (argc >= 7)
+//            x->maxX = atom_getfloatarg(6, argc, argv) ;
+//        else
+//            x->maxX = 100000;
+//
+//        if (argc >= 8)
+//            x->minY = atom_getfloatarg(7, argc, argv) ;
+//        else
+//            x->minY = -100000;
+//
+//        if (argc >= 9)
+//            x->maxY = atom_getfloatarg(8, argc, argv) ;
+//        else
+//            x->maxY = 100000;
+//
+//        if (argc >= 10)
+//            x->minZ = atom_getfloatarg(9, argc, argv) ;
+//        else
+//            x->minZ = -100000;
+//
+//        if (argc >= 11)
+//            x->maxZ = atom_getfloatarg(10, argc, argv) ;
+//        else
+//            x->maxZ = 100000;
+//
+//        if (argc >= 12)
+//            x->seuil = atom_getfloatarg(11, argc, argv) ;
+//        else
+//            x->seuil = 0;
+//
+//        if (argc >= 13)
+//            x->damp = atom_getfloatarg(12, argc, argv) ;
+//        else
+//            x->damp = 0;
+    }
     
-    x->onoff = 1;
     
-    x->VX = 0;
-    x->VY = 0;
-    x->VZ = 0;
-    
-    x->dX=0;
-    x->dY=0;
-    x->dZ=0;
-    
-    if (argc >= 3)
-        x->Xinit = atom_getfloatarg(2, argc, argv);
-    else
-        x->Xinit = 0 ;
-    
-    x->posX_old_1 = x->Xinit ;
-    x->posX_old_2 = x->Xinit;
-    SETFLOAT(&(x->pos_new[0]),  x->Xinit);
-    
-    if (argc >= 4)
-        x->Yinit = atom_getfloatarg(3, argc, argv);
-    else
-        x->Yinit = 0 ;
-    
-    x->posY_old_1 = x->Yinit ;
-    x->posY_old_2 = x->Yinit;
-    SETFLOAT(&(x->pos_new[1]),  x->Yinit);
-    
-    if (argc >= 5)
-        x->Zinit = atom_getfloatarg(4, argc, argv);
-    else
-        x->Zinit = 0 ;
-    
-    x->posZ_old_1 = x->Zinit ;
-    x->posZ_old_2 = x->Zinit;
-    SETFLOAT(&(x->pos_new[2]),  x->Zinit);
-    
-    
-    if (argc >= 6)
-        x->minX = atom_getfloatarg(5, argc, argv) ;
-    else
-        x->minX = -100000;
-    
-    if (argc >= 7)
-        x->maxX = atom_getfloatarg(6, argc, argv) ;
-    else
-        x->maxX = 100000;
-    
-    if (argc >= 8)
-        x->minY = atom_getfloatarg(7, argc, argv) ;
-    else
-        x->minY = -100000;
-    
-    if (argc >= 9)
-        x->maxY = atom_getfloatarg(8, argc, argv) ;
-    else
-        x->maxY = 100000;
-    
-    if (argc >= 10)
-        x->minZ = atom_getfloatarg(9, argc, argv) ;
-    else
-        x->minZ = -100000;
-    
-    if (argc >= 11)
-        x->maxZ = atom_getfloatarg(10, argc, argv) ;
-    else
-        x->maxZ = 100000;
-    
-    if (argc >= 12)
-        x->seuil = atom_getfloatarg(11, argc, argv) ;
-    else
-        x->seuil = 0;
-    
-    if (argc >= 13)
-        x->damp = atom_getfloatarg(12, argc, argv) ;
-    else
-        x->damp = 0;
-    
-    return (void *)x;
+    return x;
 }
 
 
@@ -1056,12 +1085,49 @@ void mass3D_inter_cylinder(t_mass3D *x, t_symbol *s, int argc, t_atom *argv)
 	}
 }
 
+void mass_notify(t_mass3D *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
+{
+    if (msg == ps_pmpd_sendmessage) { // pmpd.rr is calling with a message from 'pmpd.s'
+        t_atomarray *aa = (t_atomarray *)data;
+        
+        long ac;
+        t_atom *av;
+        atomarray_getatoms(aa, &ac, &av);
+        
+        if (atom_gettype(av) == A_SYM) {
+            t_symbol *arg = atom_getsym(av);
+            object_method_typed((t_object *)x, arg, ac-1, av+1, NULL);
+        }
+    }
+    else if (msg == ps_pmpd_bang) {
+        mass3D_bang(x); // call it directly, we know it exists!
+    }
+
+}
+
+
+void mass3D_assist(t_mass3D *x, void *b, long m, long a, char *s) {
+    if (m==ASSIST_INLET) {
+        switch(a) {
+            case 0: sprintf (s,"(bang) compute and output new position, force and velocity"); break;
+                
+        }
+    }
+    else {
+        switch(a) {
+            case 0: sprintf (s,"(list) x/y/z position of the mass"); break;
+            case 1: sprintf (s,"(list) x/y/z and total force applied to the mass"); break;
+            case 2: sprintf (s,"(list) x/y/z and total velocity of the mass"); break;
+        }
+        
+    }
+}
 
 
 static void mass3D_free(t_mass3D *x)
 {
-    // TODO: check out what this is about "pd_unbind"
 //    pd_unbind(&x->x_obj.ob_pd, x->x_sym);
+    object_unsubscribe(ps_pmpd_rr, x->x_sym, ps_pmpd_rr, x);
 }
 
 
@@ -1107,7 +1173,35 @@ void ext_main(void* r)
   class_addmethod(mass3D_class, (method)mass3D_inter_plane,  "interactor_plane_3D", A_GIMME, 0);
   class_addmethod(mass3D_class, (method)mass3D_inter_circle,  "interactor_circle_3D", A_GIMME, 0);
   class_addmethod(mass3D_class, (method)mass3D_inter_cylinder,  "interactor_cylinder_3D", A_GIMME, 0);
+    class_addmethod(mass3D_class, (method)mass_notify, "notify", A_CANT, 0);
+    class_addmethod(mass3D_class, (method)mass3D_assist, "assist", A_CANT,0);
+    
     
     class_register(CLASS_BOX, mass3D_class);
+    
+    
+    CLASS_ATTR_DOUBLE(mass3D_class, "minX", 0, t_mass3D, minX);
+    CLASS_ATTR_SAVE(mass3D_class, "minX", 0);
+    
+    CLASS_ATTR_DOUBLE(mass3D_class, "minY", 0, t_mass3D, minY);
+    CLASS_ATTR_SAVE(mass3D_class, "minY", 0);
+    
+    CLASS_ATTR_DOUBLE(mass3D_class, "maxX", 0, t_mass3D, maxX);
+    CLASS_ATTR_SAVE(mass3D_class, "maxX", 0);
+    
+    CLASS_ATTR_DOUBLE(mass3D_class, "maxY", 0, t_mass3D, maxY);
+    CLASS_ATTR_SAVE(mass3D_class, "maxY", 0);
+    
+    CLASS_ATTR_DOUBLE(mass3D_class, "seuil", 0, t_mass3D, seuil);
+    CLASS_ATTR_SAVE(mass3D_class, "seuil", 0);
+    
+    CLASS_ATTR_DOUBLE(mass3D_class, "damp", 0, t_mass3D, damp);
+    CLASS_ATTR_SAVE(mass3D_class, "damp", 0);
+    
+    
+    ps_nothing = gensym("");
+    ps_pmpd_rr = gensym("pmpd.rr");
+    ps_pmpd_bang = gensym("bang");
+    ps_pmpd_sendmessage = gensym("sendmessage");
 
 }

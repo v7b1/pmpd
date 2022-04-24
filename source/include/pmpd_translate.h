@@ -30,6 +30,10 @@ static t_symbol *ps_position2D;
 static t_symbol *ps_force2D;
 static t_symbol *ps_velocity2D;
 
+static t_symbol *ps_position3D;
+static t_symbol *ps_force3D;
+static t_symbol *ps_velocity3D;
+
 
 t_symbol* atom_getsymbolarg(int offset, long argc, t_atom *argv)
 {

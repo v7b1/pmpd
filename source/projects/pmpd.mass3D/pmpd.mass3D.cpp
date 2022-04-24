@@ -479,9 +479,9 @@ void mass3D_bang(t_mass3D *x)
   SETFLOAT(&(x->vitesse[2]), x->VZ );
   SETFLOAT(&(x->vitesse[3]), sqrt( (x->VX * x->VX) + (x->VY * x->VY) + (x->VZ * x->VZ) ));
  
-  outlet_anything(x->vitesse_out, gensym("velocity3D"), 4, x->vitesse);
-  outlet_anything(x->force_out, gensym("force3D"), 4, x->force);
-  outlet_anything(x->position3D_new, gensym("position3D"), 3, x->pos_new);
+  outlet_anything(x->vitesse_out, ps_velocity3D, 4, x->vitesse);
+  outlet_anything(x->force_out, ps_force3D, 4, x->force);
+  outlet_anything(x->position3D_new, ps_position3D, 3, x->pos_new);
  }
 }
 
@@ -1186,11 +1186,17 @@ void ext_main(void* r)
     CLASS_ATTR_DOUBLE(mass3D_class, "minY", 0, t_mass3D, minY);
     CLASS_ATTR_SAVE(mass3D_class, "minY", 0);
     
+    CLASS_ATTR_DOUBLE(mass3D_class, "minZ", 0, t_mass3D, minZ);
+    CLASS_ATTR_SAVE(mass3D_class, "minZ", 0);
+    
     CLASS_ATTR_DOUBLE(mass3D_class, "maxX", 0, t_mass3D, maxX);
     CLASS_ATTR_SAVE(mass3D_class, "maxX", 0);
     
     CLASS_ATTR_DOUBLE(mass3D_class, "maxY", 0, t_mass3D, maxY);
     CLASS_ATTR_SAVE(mass3D_class, "maxY", 0);
+    
+    CLASS_ATTR_DOUBLE(mass3D_class, "maxZ", 0, t_mass3D, maxZ);
+    CLASS_ATTR_SAVE(mass3D_class, "maxZ", 0);
     
     CLASS_ATTR_DOUBLE(mass3D_class, "seuil", 0, t_mass3D, seuil);
     CLASS_ATTR_SAVE(mass3D_class, "seuil", 0);
@@ -1203,5 +1209,9 @@ void ext_main(void* r)
     ps_pmpd_rr = gensym("pmpd.rr");
     ps_pmpd_bang = gensym("bang");
     ps_pmpd_sendmessage = gensym("sendmessage");
+    
+    ps_velocity3D = gensym("velocity3D");
+    ps_force3D = gensym("force3D");
+    ps_position3D = gensym("position3D");
 
 }

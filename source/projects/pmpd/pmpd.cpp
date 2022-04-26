@@ -30,10 +30,6 @@
 // porting to max8, october 2020, vb
 
 
-//#include "c74_msp.h"
-//#include "math.h"
-//
-
 #include "c74_max.h"
 
 #include "pmpd.h"
@@ -53,18 +49,6 @@ using namespace c74::max;
 #include "pmpd_stat.h"
 #include "pmpd_various.h"
 #include "pmpd_deprecated.h"
-
-
-//#include "pmpd_core.c"
-//#include "pmpd_set.c"
-//#include "pmpd_get.c"
-//#include "pmpd_list.c"
-//#include "pmpd_tab.c"
-//#include "pmpd_test.c"
-//#include "pmpd_stat.c"
-//#include "pmpd_various.c"
-//#include "pmpd_deprecated.c"
-
 
 
 

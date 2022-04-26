@@ -29,13 +29,14 @@ void pmpd_forceX(t_pmpd *x, t_symbol *s, int argc, t_atom *argv)
 // add a force to a specific mass
     int tmp, i;
 
-    if ( ( argv[0].a_type == A_FLOAT ) && ( argv[1].a_type == A_FLOAT ) )
+//    if ( ( argv[0].a_type == A_FLOAT ) && ( argv[1].a_type == A_FLOAT ) )
+    if ( atom_isNumber(argv) && atom_isNumber(argv+1))
     {
         tmp = atom_getfloatarg(0, argc, argv);
         tmp = max(0, min( x->nb_mass-1, tmp));
         x->mass[tmp].forceX += atom_getfloatarg(1, argc, argv);
     }
-    if ( ( argv[0].a_type == A_SYM ) && ( argv[1].a_type == A_FLOAT ) )
+    if ( ( argv[0].a_type == A_SYM ) && ( atom_isNumber(argv+1) ) )
     {
         for (i=0; i< x->nb_mass; i++)
         {
@@ -61,13 +62,13 @@ void pmpd_addPosX(t_pmpd *x, t_symbol *s, int argc, t_atom *argv)
 {
     int tmp, i;
 
-    if ( ( argv[0].a_type == A_FLOAT ) && ( argv[1].a_type == A_FLOAT ) )
+    if ( atom_isNumber(argv) && atom_isNumber(argv+1))
     {
         tmp = atom_getfloatarg(0, argc, argv);
         tmp = max(0, min( x->nb_mass-1, tmp));
         x->mass[tmp].posX += atom_getfloatarg(1, argc, argv);
     }
-    if ( ( argv[0].a_type == A_SYM ) && ( argv[1].a_type == A_FLOAT ) )
+    if ( ( argv[0].a_type == A_SYM ) && ( atom_isNumber(argv+1) ) )
     {
         for (i=0; i< x->nb_mass; i++)
         {

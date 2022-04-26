@@ -59,14 +59,15 @@ void *pmpd_new()
 {
 //    t_pmpd *x = (t_pmpd *)pd_new(pmpd_class);
     t_pmpd *x = (t_pmpd *)object_alloc(pmpd_class);
-
-    pmpd_reset(x);
     
-//    x->main_outlet=outlet_new(&x->x_obj, 0);
-    x->main_outlet = outlet_new((t_object *)x, 0);
-    // x->info_outlet=outlet_new(&x->x_obj, 0); // TODO
+    if (x) {
+//        x->info_outlet = outlet_new((t_object*)x, 0);
+        x->main_outlet = outlet_new((t_object *)x, 0);
+        
+        pmpd_reset(x);
+    }
 
-    return (void *)x;
+    return x;
 }
 
 void pmpd_bang(t_pmpd *x)

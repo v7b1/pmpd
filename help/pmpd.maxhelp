@@ -115,7 +115,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 136.5, 362.5, 117.0, 36.0 ],
+					"patching_rect" : [ 96.25, 364.5, 117.0, 36.0 ],
 					"text" : "Output all masses positions in a list"
 				}
 
@@ -188,7 +188,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 82.0, 282.5, 78.0, 50.0 ],
+					"patching_rect" : [ 41.75, 284.5, 78.0, 50.0 ],
 					"text" : "create structure of the model",
 					"textjustification" : 1
 				}
@@ -201,7 +201,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 30.0, 643.5, 145.0, 36.0 ],
+					"patching_rect" : [ 30.0, 643.5, 146.0, 36.0 ],
 					"text" : "delete all masses, links and internal variables",
 					"textjustification" : 1
 				}
@@ -314,7 +314,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 605.0, 619.0, 104.0, 23.0 ],
-					"text" : "forceX mob 10."
+					"text" : "forceX mob 10"
 				}
 
 			}
@@ -476,7 +476,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 253.25, 369.0, 119.0, 23.0 ],
+					"patching_rect" : [ 213.0, 371.0, 119.0, 23.0 ],
 					"text" : "bang, massesPosL"
 				}
 
@@ -488,7 +488,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 253.25, 296.0, 60.0, 23.0 ],
+					"patching_rect" : [ 213.0, 298.0, 60.0, 23.0 ],
 					"text" : "metro 20"
 				}
 
@@ -501,7 +501,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 253.25, 255.0, 24.0, 24.0 ]
+					"patching_rect" : [ 213.0, 257.0, 24.0, 24.0 ]
 				}
 
 			}
@@ -512,7 +512,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 253.0, 197.0, 62.0, 23.0 ],
+					"patching_rect" : [ 212.75, 199.0, 62.0, 23.0 ],
 					"text" : "loadbang"
 				}
 
@@ -525,7 +525,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 167.0, 256.0, 24.0, 24.0 ]
+					"patching_rect" : [ 126.75, 258.0, 24.0, 24.0 ]
 				}
 
 			}
@@ -547,7 +547,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 253.25, 430.0, 66.0, 23.0 ],
+					"patching_rect" : [ 213.0, 432.0, 66.0, 23.0 ],
 					"text" : "s pmpd-in"
 				}
 
@@ -971,7 +971,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 167.0, 296.0, 36.0, 23.0 ],
+					"patching_rect" : [ 126.75, 298.0, 36.0, 23.0 ],
 					"saved_object_attributes" : 					{
 						"description" : "",
 						"digest" : "",
